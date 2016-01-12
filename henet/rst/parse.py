@@ -1,5 +1,9 @@
 import os
 import patch
+import datetime
+import re
+
+import dateutil.parser
 
 from docutils.parsers.rst import Parser
 from docutils.utils import new_document
@@ -13,6 +17,7 @@ from docutils.nodes import Element, SkipNode
 from docutils import io, core
 
 from Levenshtein import distance, jaro
+from pelican.utils import get_date
 
 
 class Writer(writers.Writer):
@@ -64,9 +69,16 @@ class RSTTranslator(nodes.NodeVisitor):
                 name, body = info.children
                 name = name.astext()
                 value = body.astext()
+                if name in ('date', 'eventdate'):
+                    value = get_date(value)
                 metadata[name] = value
             else:
-                metadata[info.tagname.lower()] = info.astext()
+                if info.tagname.lower() in ('date', 'eventdate'):
+                    value = get_date(info.astext())
+                else:
+                    value = info.astext()
+                metadata[info.tagname.lower()] = value
+
         self.article['metadata'] = metadata
         self.article['metadata_source'] = node.realsource.strip()
         self.result.append(node.realsource)
