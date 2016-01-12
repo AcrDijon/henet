@@ -29,11 +29,21 @@ Preview
 
 </form>
 
+<script src="/resources/js/editor.js"></script>
+
 <script>
  $('#date').datepicker({
    format: "dd/mm/yyyy",
    language: "fr"
  });
+
+ window.baseTitle = $('head title').text();
+
+ $('textarea#body').bind('change', genPreview);
+ timerId = window.setInterval(genPreview, 900);
+
+ $('textarea#body').scroll(syncScrollPosition);
+
 </script>
 
 % rebase base title = "article"
