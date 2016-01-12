@@ -11,6 +11,7 @@
     <link href="/resources/css/bootstrap.css" rel="stylesheet" />
     <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet" />
     <link href="/resources/css/style.css" rel="stylesheet" />
+    <link id="bsdp-css" href="/resources/css/datepicker3.css" rel="stylesheet">
     <!--CSS-END-->
 
     <!--[if lt IE 9]>
@@ -61,6 +62,8 @@
             <div class="span9">
                 <!--JS-START-->
                 <script src="/resources/js/jquery.js"></script>
+                <script src="/resources/js/bootstrap-datepicker.js"></script>
+                <script src="/resources/js/bootstrap-datepicker.fr.min.js" charset="UTF-8"></script>
                 <!--JS-END-->
                 <!-- CONTENT -->
                 <div class="row-fluid">

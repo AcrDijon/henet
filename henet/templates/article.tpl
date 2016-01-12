@@ -8,7 +8,7 @@
  <div class="form-group">
    <label for="date">Date:</label>
    <div>
-     <input class="form-control" id="date" type="text" value="{{article['metadata']['date'] }}"></input>
+     <input class="form-control" id="date" type="text" value="{{article['metadata']['date'].strftime('%d/%m/%Y') }}"></input>
    </div>
  </div>
 
@@ -22,4 +22,11 @@
 
 </form>
 
+
+<script>
+ $('#date').datepicker({
+   format: "dd/mm/yyyy",
+   language: "fr"
+ });
+</script>
 % rebase base title = "article"
