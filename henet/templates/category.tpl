@@ -26,4 +26,4 @@
 
 </table>
 
-% rebase base title = "{{ category }}"
+% rebase base title = category
