@@ -14,12 +14,11 @@
 
 
  <div class="form-group">
-   <textarea class="form-control" id="body"
-            style="min-height: 400px;width: 90%; font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;" rows="5" id="content">{{article['body']}}</textarea>
+   <textarea class="form-control" id="body" rows="5" id="content">{{article['body']}}</textarea>
   </div>
 
 <div class="form-group">
-  <iframe style="width: 90%; min-height: 400px" id="preview"
+  <iframe id="preview"
         src="/category/{{ category }}/{{filename}}/preview">
 Preview
 </iframe>
@@ -30,12 +29,15 @@ Preview
 </form>
 
 <script src="/resources/js/editor.js"></script>
+<script src="/resources/js/jquery-linedtextarea.js"></script>
 
 <script>
  $('#date').datepicker({
    format: "dd/mm/yyyy",
    language: "fr"
  });
+
+$("#body").linedtextarea();
 
  window.baseTitle = $('head title').text();
 
