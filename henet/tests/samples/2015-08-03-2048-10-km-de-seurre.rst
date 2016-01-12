@@ -1,0 +1,22 @@
+10 km de Seurre
+===============
+
+:date: 2015-08-03 20:48
+:category: Résultats
+:summary: 10 km de Seurre
+
+|Mais ou est passé Jean Philippe?|
+
+
+Mais ou est passé Jean Philippe?
+
+167 classés / Victoire de **Emile BLONDEL** en 31'50''
+
+- 16     | **David CROTET**         | 39'45''
+- 55     | **Florent CROTET**       | 45'51''
+- 63     | **David LEPETIT**        | 47'03''
+- 73     | **Jean Christophe DUBARD** | 47'54''
+
+**Félicitations à tous les 4**
+
+.. |Mais ou est passé Jean Philippe?| image:: http://assets.acr-dijon.org/old/httpimgover-blog-kiwicom149288520150803-ob_eb9a4b_1.JPG

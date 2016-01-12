@@ -1,0 +1,13 @@
+Test VMA
+========
+
+:date: 2014-09-22 14:03
+:category: Résultats
+:summary: Test VMA
+
+Nous vous rappelons que nous vous proposons un Test VMA ce mardi en lieu et place de l'entraînement habituel pour ceux et celles qui le désirent.
+
+
+|Les hommes reprennent la donne|
+
+.. |Les hommes reprennent la donne| image:: http://assets.acr-dijon.org/old/httpimgover-blogcom500x3750120862entrainement2012test-vma-les-hommes-reprennent-la-donne.JPG

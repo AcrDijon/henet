@@ -1,0 +1,25 @@
+100 km de Millau 2014...
+========================
+
+:date: 2014-09-27 06:40
+:category: Résultats
+:summary: 100 km de Millau 2014...
+
+Cette fois-ci, nous y sommes...
+
+
+|Millau-2014.jpg|
+
+
+Dans quelques heures, **Didier Belleville**  s'élancera pour explorer ces limites et rejoindre l'arrivée de ce 100 km mythique.
+
+
+Si le coeur vous en dit, vous pourrez le suivre via le lien ci-dessous :
+
+
+`http://www.100kmdemillau.com/100-km-de-millau/suivi-de-la-course <http://www.100kmdemillau.com/100-km-de-millau/suivi-de-la-course>`_
+
+
+Départ de l'épreuve à 10h.
+
+.. |Millau-2014.jpg| image:: http://assets.acr-dijon.org/old/httpimgover-blogcom409x6000120862coursescourses-2014-millau-2014.jpg

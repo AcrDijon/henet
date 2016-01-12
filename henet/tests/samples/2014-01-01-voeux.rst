@@ -1,0 +1,15 @@
+Voeux 2014
+==========
+
+:date: 2014-01-01 15:20
+:category: Actualités
+:location: ACR
+:eventdate: 2014-01-01
+
+
+.. image:: http://assets.acr-dijon.org/voeux.jpg
+
+" Le Président et le Conseil d'administration de l'ACR adressent à tous les adhérents leurs voeux sincères en ce début d'année 2014.
+Que cette nouvelle année soit riche de réussite familiale, professionnelle et sportive.
+Bonne année à toutes et à tous."
+

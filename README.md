@@ -1,2 +1,0 @@
-# henet
-Admin for Pelican

@@ -1,0 +1,52 @@
+Relais des roses 2015
+=====================
+
+:date: 2015-07-01 21:59
+:category: Résultats
+:summary: Relais des roses 2015
+
+|Notre équipe masculine|
+
+
+Notre équipe masculine
+
+Cette année encore, l'ACR Dijon était présente à Chalon-sur-Saône.
+
+
+Ces 3 équipes se sont brillament illustrées parmi les 149 équipes.
+
+
+Notre équipe mixte (Pierre Audin, Benoit Sureau, Bertrand Bulle, Fabrice Heuret , **Soua M'Combani** et**Marine Humbert** ) termine 11ème et 3ème mixte.
+
+
+Notre équipe Masculine (Jean Philippe Beuche, David Lepetit, Jean Christophe Dubard, Lionel Bourgeois, Ismael Khadir et**Mickael Boichot** ) termine 26ème.
+
+
+Notre équipe féminine (Marie Laure Léonard, Claudette Estivalet, Sylvie Michelet, Béatrice Dobrowski, Laurence Caerie  et **Talmi Simeha** ) termine 92ème.
+
+|Notre équipe féminine|
+
+
+Notre équipe féminine
+
+- **Pierre AUDIN**           | 20:41
+- **Bertrand BULLE**         | 21:17
+- **Fabrice HEURET**         | 22:18
+- **Benoît SUREAU**          | 22:42
+- **Mickaël BOICHOT**        | 23:23
+- **Lionel BOURGEOIS**       | 25:23
+- **Ismaël KHADIR**          | 25:44
+- **Jean Philippe BEUCHE**   | 26:42
+- **Jean Christophe DUBARD** | 27:19
+- **Marine HUMBERT**         | 27:24
+- **Talmi SIMEHA**           | 27:29
+- **Soianrati M'COMBANI**    | 27:43
+- **David LEPETIT**          | 27:59
+- **Béatrice DABROWSKI**     | 29:32
+- **Claudette ESTIVALET**    | 29:58
+- **Marie Laure LEONARD**    | 30:02
+- **Sylvie MICHELET**        | 32:46
+- **Laurence CARRIE**        | 33:19
+
+.. |Notre équipe masculine| image:: http://assets.acr-dijon.org/old/httpimgover-blog-kiwicom149288520150701-ob_08355a_img-3595.JPG
+.. |Notre équipe féminine| image:: http://assets.acr-dijon.org/old/httpimgover-blog-kiwicom149288520150701-ob_431ddf_img-3610.JPG

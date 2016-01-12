@@ -1,0 +1,36 @@
+Crocofolies 2015
+================
+
+:date: 2015-06-22 08:40
+:category: Résultats
+:summary: Crocofolies 2015
+
+|Crocofolies 2015|
+
+**24km**
+111 classés / 1er : **Benoit FEUCHOT** en 1h41'08''
+
+- 17      | **Dominique ZIMA**         | 1h58'29'' (**3eV2H**)
+- 18      | **Frédéric RABIET**        | 1h58'30''
+- 69      | **Eric MARILLIER**         | 2h19'08''
+- 93      | **Jean-Christophe DUBARD** | 2h29'06''
+- 94      | **Sylvain SANCHEZ**        | 2:29'19''   
+
+**10km**
+311 classés / 1er : **Vincent PIVOT** en 38'32''
+
+- 14      | **Fabrice HEURET**         | 42'31''
+- 38      | **Benoît SUREAU**          | 45'19''
+- 71      | **Jacky BAUDRY**           | 48'13''
+- 108     | **Didier BELLEVILLE**      | 51'27''
+- 149     | **Sandrine FANTON**        | 55'34''
+- 170     | **Jean Philippe BEUCHE**   | 57'17''
+- 215     | **Claire TAINTURIER**      | 1h03'42''
+- 226     | **David LEPETIT**          | 1h04'05''
+- 300     | **Jean Louis RABIET**      | 1h13'59'' (**2eV4H**)
+
+
+|Crocofolies 2015 #0|
+
+.. |Crocofolies 2015| image:: http://assets.acr-dijon.org/old/httpimgover-blog-kiwicom149288520150622-ob_ef82ce_jean-louis1.jpg
+.. |Crocofolies 2015 #0| image:: http://assets.acr-dijon.org/old/httpimgover-blog-kiwicom149288520150622-ob_e9d095_david2.jpg

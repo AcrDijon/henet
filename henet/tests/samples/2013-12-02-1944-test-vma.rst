@@ -1,0 +1,28 @@
+Test VMA
+========
+
+:date: 2013-12-02 19:44
+:category: Résultats
+:summary: Test VMA
+
+|P1050732.JPG|
+
+
+Ce dimanche matin, 5 athlètes étaient sur la piste Colette Besson afin d'effectuer un Test VMA.
+
+
+**Vincent Lauvergne**  = 15,5 km/h
+
+
+**Mikael Marcaud**  = 16 km/h
+
+
+**Tarek Ziade**  = 18,5 km/h
+
+
+et **Bertrand Bulle et Bertrand Quintin**  = 19 km/h
+
+
+Remerciement à **Mag et Alain**  pour l'organisation de celui-ci et **Jacques**  pour la photo.
+
+.. |P1050732.JPG| image:: http://assets.acr-dijon.org/old/httpimgover-blogcom500x3750120862coursescourses-2013-p1050732.JPG
