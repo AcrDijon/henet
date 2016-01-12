@@ -11,23 +11,23 @@ Foulée Rotarienne
 
 Une dizaine d'ACRistes présents hier aux Foulées Rotarienne.
 
- 
+
 
 Pour une course sans chrono ni classement, juste pour le plaisir de courir dans la Combe à la serpent.
 
- 
+
 
 Un lièvre est cependant arrivé à distraire ce qui aurait pu être un jour de fête sous le soleil dijonnais.
 
- 
+
 
 PS pour les non présents : Sédik largement en tête de la Rotarienne a fait une erreur de parcours (au niveau de la fourche en haut du chemin de fond de Combe), ce qui l'a conduit sur quelques centaines de mètres à redescendre directement avant de se rendre compte de son erreur, revenir sur le bon tracé et finir malgré tout la course (10 km 370 en 39'...) avec 3' d'avance sur le second.
 
- 
+
 
 Il n'a donc pas accompli le circuit exact, (motif de sa disqualification) mais a fait 2/300 M en + ! Cela a été apparemment signalé à la direction de course à l'arrivée qui a disqualifié Sédik pour avoir "coupé".
 
- 
+
 
 Le responsable de la décision a formulé des excuses à Sédik, mais rien n'a été communiqué de façon officielle.
 
@@ -44,8 +44,8 @@ Aucune excuse publique ne lui a été formulée ce qui porte préjudice à son i
 
 Ce commentaire n’est en aucune manière une critique de l’action caritative du Rotary Club qui mérite tout notre soutien.
 
- 
+
 
 Pour l’ACR DIJON
 
-Alain BREGAND 
+Alain BREGAND

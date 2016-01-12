@@ -1,4 +1,4 @@
-UTCO 
+UTCO
 ====
 
 :date: 2013-06-03 15:20
@@ -7,30 +7,30 @@ UTCO
 
 .. image:: http://assets.acr-dijon.org/utco13.jpg
 
-105 km 	  	 
-  	  	  	 
-	 
-- 1 	Jean Marc Billet 	11:00:59 	 
-- 2 	Frederic Marolles 	11:06:17 	 
-- 3 	Damien Fievet 	12:30:31 	 
-  	  	  	 
-- 7 	Amandine Roux 	13:09:57 	 
-  	  	  	 
-- 9 	**Guillaume Charbonneau** 	13:23:40 	**2ème V1**
-- 24 	**Matthieu Tharion** 	14:58:38 	 
-- 56 	**Véronique Bornel** 	16:44:12 	**2ème V1**
-  	  	  	 
-- 106 	Maximilian Modica 	18:53:49 	 
-  	  	  	 
+105 km
 
-15 km 	  	  	 
-  	  	  	 
- 
-- 1 	Fabien Russier 	01:16:31 	 
-- 2 	Lionel Verjus 	01:18:26 	 
-- 3 	**Romain Marteau** 	01:18:37 	 
-  	  	  	 
-- 141 	**Talmi Simeha** 	01:51:41 	 
-- 142 	**Christian Cotelle** 	01:51:41 	 
-  	  	  	 
-- 282 	Jean Yves Faraud 	03:13:47 	 
+
+- 1     Jean Marc Billet    11:00:59
+- 2     Frederic Marolles   11:06:17
+- 3     Damien Fievet   12:30:31
+
+- 7     Amandine Roux   13:09:57
+
+- 9     **Guillaume Charbonneau**   13:23:40    **2ème V1**
+- 24    **Matthieu Tharion**    14:58:38
+- 56    **Véronique Bornel**    16:44:12    **2ème V1**
+
+- 106   Maximilian Modica   18:53:49
+
+
+15 km
+
+
+- 1     Fabien Russier  01:16:31
+- 2     Lionel Verjus   01:18:26
+- 3     **Romain Marteau**  01:18:37
+
+- 141   **Talmi Simeha**    01:51:41
+- 142   **Christian Cotelle**   01:51:41
+
+- 282   Jean Yves Faraud    03:13:47

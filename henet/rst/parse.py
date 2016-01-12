@@ -45,10 +45,14 @@ class RSTTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, *args, **kw)
         self.result = []
         self.article = Article()
+        self._main_title_visited = False
 
     def visit_title(self, node):
-        self.article['title'] = node.astext()
-        self.article['title_source'] = node.realsource
+        if not self._main_title_visited:
+            self.article['title'] = node.astext()
+            self.article['title_source'] = node.realsource
+            self._main_title_visited = True
+
         self.result.append(node.realsource)
         self.result.append('')
         raise SkipNode()
@@ -186,36 +190,13 @@ def parse_article(filename, destination=None):
     pub.set_components('standalone', 'restructuredtext', 'html')
     pub.writer = Writer()
     pub.set_source(None, filename)
+
     if destination is not None:
         pub.set_destination(None, destination)
+    else:
+        pub.destination_class = io.NullOutput
+        pub.set_destination(None, None)
+
     pub.process_programmatic_settings(None, None, None)
     pub.publish()
     return pub.writer.visitor.article
-
-
-if __name__ == '__main__':
-
-    for file in os.listdir('samples'):
-        if not file.endswith('rst') or file.startswith('res-'):
-            continue
-
-        filename = os.path.join('samples', file)
-        dest = os.path.join('samples', 'res-' + file)
-        article = parse_article(filename, dest)
-        res = article.render()
-
-        with open(filename) as source:
-            with open(dest) as destination:
-                source = source.read().strip()
-                destination = destination.read().strip()
-                source = source.expandtabs(tabsize=4)
-
-                if source != destination:
-                    lev_ = distance(source, destination)
-                    jaro_ = jaro(source, destination)
-
-                    if lev_ > 10 and jaro_ < 0.85:
-                        print('Warning. The file %s was heavily modified' % filename)
-                        print('size: %d' % len(source))
-                        print('jaro: %f' % jaro_)
-                        print('lev: %s' % lev_)
