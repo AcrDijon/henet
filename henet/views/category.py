@@ -7,9 +7,11 @@ from henet.util import parse_articles
 @route("/category/<name>")
 @app.view("category")
 def category(name):
+    page = int(request.params.get('page', 0))
     data = dict(app.vars['categories'])[name]
     cache_dir = app._config['henet']['cache_dir']
-    articles = parse_articles(data['path'], cache_dir)
+    articles, total_pages = parse_articles(data['path'], cache_dir, page)
 
     return {"category": name, 'articles': articles,
-            "data": data}
+            "data": data, "total_pages": total_pages,
+            "current_page": page}

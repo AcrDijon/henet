@@ -19,7 +19,7 @@ def md5(data):
     return hashlib.md5(data).hexdigest()
 
 
-def parse_articles(path, cache_dir):
+def parse_articles(path, cache_dir, page=-1, page_size=20):
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
 
@@ -46,4 +46,16 @@ def parse_articles(path, cache_dir):
             articles.append(document)
 
     articles.sort(by_date)
-    return articles
+    total_size = len(articles)
+    total_pages, rest = divmod(total_size, page_size)
+    if rest > 0:
+        total_pages += 1
+
+    if page != -1:
+        start = page * page_size
+        end = start + page_size - 1
+        print start
+        print end
+        return articles[start:end], total_pages
+
+    return articles, total_pages
