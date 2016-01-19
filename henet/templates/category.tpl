@@ -14,7 +14,7 @@
 <tr>
  <td>{{ article['metadata']['date'].strftime('%d/%m/%Y') }}</td>
  <td>
-  <a href="/category/{{ category }}/{{article['filename']}}">
+  <a href="/category/{{ category }}{{article['filename']}}">
     {{ article['title'] }}
   </a>
  </td>
