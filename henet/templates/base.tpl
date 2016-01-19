@@ -40,12 +40,12 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            % for cat_, __ in categories:
+            % for cat_, data  in categories:
                 % if cat_ == category:
                 <li class="active"><a href="/category/{{ cat_ }}">
-                        {{ cat_ }}</a></li>
+                        {{ data['title'] }}</a></li>
                 % else:
-                <li><a href="/category/{{ cat_ }}">{{ cat_ }}</a></li>
+                <li><a href="/category/{{ cat_ }}">{{ data['title'] }}</a></li>
                 % end
             % end
           </ul>

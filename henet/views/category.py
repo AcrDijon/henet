@@ -14,7 +14,9 @@ def by_date(article1, article2):
 @app.view("category")
 def category(name):
     articles = []
-    path = dict(app.vars['categories'])[name]['path']
+    data = dict(app.vars['categories'])[name]
+    path = data['path']
+
     for file_ in os.listdir(path):
         if not file_.endswith('.rst'):
             continue
@@ -28,4 +30,5 @@ def category(name):
         articles.append(document)
 
     articles.sort(by_date)
-    return {"category": name, 'articles': articles}
+    return {"category": name, 'articles': articles,
+            "data": data}

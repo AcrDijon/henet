@@ -1,5 +1,5 @@
 <div class="page-header">
-<h1>{{ category }}</h1>
+<h1>{{ data['title'] }}</h1>
 </div>
 
 <table class="table table-striped">
@@ -23,4 +23,4 @@
 </tbody>
 </table>
 
-% rebase('base.tpl', page_title=category)
+% rebase('base.tpl', page_title=data['title'])

@@ -3,23 +3,21 @@ import sys, os
 from datetime import datetime
 from socket import socket, SOCK_DGRAM, AF_INET
 from functools import partial
+import konfig
 
-#
-# Add current and parent path to syspath
-#
-currentPath = os.path.dirname(__file__)
-parentPath = os.path.abspath(os.path.join(currentPath, os.path.pardir))
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.path.pardir))
 
 paths = [
-    currentPath,
-    parentPath
+    current_path,
+    parent_path
 ]
 
 for path in paths:
     if path not in sys.path:
         sys.path.insert(0, path)
 
-os.chdir(currentPath)
+os.chdir(current_path)
 
 
 #
@@ -53,27 +51,27 @@ def heartbeat():
     return "A-OK ya'll!"
 
 
-CATS = [
-  ['Actualités', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/actu'}],
-  ['Résultats', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/resultats'}],
-  ['Foulees', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/foulees'}],
-  ['Pages statiques', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/pages'}]
-]
+DEFAULT_CONFIG = os.path.join(parent_path, 'config.ini')
 
 
 def main():
     print('running app')
+    if len(sys.argv) > 1:
+        config = konfig.Config(sys.argv[1])
+    else:
+        config = konfig.Config(DEFAULT_CONFIG)
 
-    #
-    # Setup our pre-request plugin, session, debug mode, and methods
-    # to serve static resources.
-    #
     bottle.debug(DEBUG)
 
-    # Uncomment line 84 and comment line 83 to enable session management
     app = bottle.app()
-    app_stack.vars = app.vars = {'categories': CATS}
+    cats = []
+    for cat in config['henet']['categories']:
+        values = dict(config[cat].items())
+        cats.append((cat, values))
+
+    app_stack.vars = app.vars = {'categories': cats}
     app_stack.view = partial(view, **app.vars)
+    app_stack._config = app._config = config
 
     from henet import views
     #app = SessionMiddleware(bottle.app(), config.SESSION_OPTS)
