@@ -22,13 +22,14 @@
 % end
 </tbody>
 </table>
-% for page in range(total_pages):
-% if page == current_page:
-  {{page}}
-% else:
-  <a href="/category/{{ category }}?page={{page}}">{{page}}</a>
+% if total_pages > 1:
+  % for page in range(total_pages):
+  % if page == current_page:
+    {{page}}
+  % else:
+    <a href="/category/{{ category }}?page={{page}}">{{page}}</a>
+  % end
+  % end
 % end
-% end
-
 
 % rebase('base.tpl', page_title=data['title'])
