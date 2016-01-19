@@ -11,8 +11,8 @@
     <meta name="author" content="" />
 
     <!--CSS-START-->
-    <link href="/resources/css/bootstrap.css" rel="stylesheet" />
-    <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/resources/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="/resources/css/style.css" rel="stylesheet" />
     <link id="bsdp-css" href="/resources/css/datepicker3.css" rel="stylesheet">
     <link id="jqta-css" href="/resources/css/jquery-linedtextarea.css"
@@ -26,44 +26,44 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="/">Henet Admin</a>
-                <div class="nav-collapse collapse">
-                    <p class="navbar-text pull-right">
-                        Logged in as <a href="#" class="navbar-link">Username</a>
-                    </p>
-                    <ul class="nav">
-                        % for cat_, __ in categories:
-                          % if cat_ == category:
-                          <li class="active"><a href="/category/{{ cat_ }}">
-                                 {{ cat_ }}</a></li>
-                          % else:
-                            <li><a href="/category/{{ cat_ }}">{{ cat_ }}</a></li>
-                          % end
-                        % end
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="container-fluid">
-        <div class="row-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Henet Admin</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            % for cat_, __ in categories:
+                % if cat_ == category:
+                <li class="active"><a href="/category/{{ cat_ }}">
+                        {{ cat_ }}</a></li>
+                % else:
+                <li><a href="/category/{{ cat_ }}">{{ cat_ }}</a></li>
+                % end
+            % end
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
             <div class="span12">
                 <!--JS-START-->
-                <script src="/resources/js/jquery.js"></script>
+                <script src="/resources/js/jquery.min.js"></script>
+                <script src="/resources/js/bootstrap.min.js"></script>
                 <script src="/resources/js/bootstrap-datepicker.js"></script>
                 <script src="/resources/js/bootstrap-datepicker.fr.min.js" charset="UTF-8"></script>
                 <!--JS-END-->
                 <!-- CONTENT -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="span12" id="contentContainer">
                         %include
                     </div>

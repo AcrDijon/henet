@@ -1,9 +1,12 @@
-<h1>Blog Admin</h1>
-<p>Welcome to the blog admin</p>
 
-<div class="hero-unit">
-  <a class="btn btn-primary btn-large">Create new entry &raquo;</a>
+
+<div class="page-header">
+  <h1>Actions rapide</h1>
 </div>
+<p>
+  <button type="button" class="btn btn-lg btn-primary">Créer une actualité</button>
+  <button type="button" class="btn btn-lg btn-primary">Ajouter un résultat</button>
+</p>
 
 
 % rebase base title = "Home"

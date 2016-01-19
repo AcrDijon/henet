@@ -1,3 +1,7 @@
+<div class="page-header">
+  <h1>Edition du fichier "{{ filename }}"</h1>
+</div>
+
 
 <form role="form">
  <div class="form-group">
@@ -6,23 +10,30 @@
  </div>
 
  <div class="form-group">
+   <label for="title">Lieu:</label>
+   <input class="form-control" id="location" type="text" value="{{ article['metadata'].get('location', '') }}"></input>
+ </div>
+
+ <div class="form-group">
    <label for="date">Date:</label>
-   <div>
-     <input class="form-control" id="date" type="text" value="{{article['metadata']['date'].strftime('%d/%m/%Y') }}"></input>
-   </div>
+   <input class="form-control" id="date" type="text" value="{{article['metadata']['date'].strftime('%d/%m/%Y') }}"></input>
+ </div>
+
+ <div class="form-group">
+   <label for="eventdate">Date Evenement:</label>
+   <input class="form-control" id="eventdate" type="text" value="{{article['metadata'].get('eventdate', article['metadata']['date']).strftime('%d/%m/%Y') }}"></input>
  </div>
 
 
- <div class="form-group visual">
-   <textarea class="form-control" id="body" rows="5" id="content">{{article['body']}}</textarea>
-
-   <iframe id="preview" src="/category/{{ category }}/{{filename}}/preview">
-    Preview
-   </iframe>
-   <span style="clear: both"></span>
+ <div class="form-group">
+    <textarea id="body" rows="5" id="content">{{article['body']}}</textarea>
+    <iframe id="preview" src="/category/{{ category }}/{{filename}}/preview">
+     Preview
+    </iframe>
+    <span style="clear: both"></span>
  </div>
 
- <!--button type="submit" class="btn btn-default">Sauvegarder</button-->
+ <button type="submit" class="btn btn-default">Sauvegarder</button>
 
 </form>
 
@@ -34,6 +45,12 @@
    format: "dd/mm/yyyy",
    language: "fr"
  });
+
+ $('#eventdate').datepicker({
+   format: "dd/mm/yyyy",
+   language: "fr"
+ });
+
 
  $("#body").linedtextarea();
 
