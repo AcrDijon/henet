@@ -210,5 +210,9 @@ def parse_article(filename, destination=None):
         pub.set_destination(None, None)
 
     pub.process_programmatic_settings(None, None, None)
-    pub.publish()
+    try:
+        pub.publish()
+    except SystemExit as e:
+        raise Exception(str(e))
+
     return pub.writer.visitor.article
