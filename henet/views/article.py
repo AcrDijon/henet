@@ -1,4 +1,7 @@
+# coding: utf8
 import os
+import datetime
+
 from bottle import view, route, request, app, post, redirect
 from henet.util import parse_article
 from pelican.utils import slugify
@@ -49,11 +52,33 @@ def article(category, article):
     redirect('/category/%s%s' % (category, document['filename']))
 
 
+DEFAULT_BODY = u"""
+Voici un exemple de texte.
+
+**Texte en gras**
+
+*Texte en italique*
+
+Voici une liste:
+
+- un
+- deux
+- trois
+
+Attention à bien sauter une ligne avant ET apres la liste!
+
+Une image:
+
+.. image:: http://assets.acr-dijon.org/1janvacr1.jpg
+
+"""
+
+
 @post("/create")
 def create_article():
     data = dict(request.POST.decode())
     title = data['title']
-    body = data.get('body', u'Ajouter du contenu ici.')
+    body = data.get('body', DEFAULT_BODY)
     date = datetime.datetime.now()
     if u'add_actus' in data:
         category = u'actus'
