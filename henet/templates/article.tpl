@@ -27,7 +27,7 @@
 
  <div class="form-group">
     <textarea id="body" rows="5" id="content">{{article['body']}}</textarea>
-    <iframe id="preview" src="/category/{{ category }}/{{filename}}/preview">
+    <iframe id="preview" src="/preview">
      Preview
     </iframe>
     <span style="clear: both"></span>

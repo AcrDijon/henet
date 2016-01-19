@@ -17,18 +17,15 @@ def category(name):
     data = dict(app.vars['categories'])[name]
     path = data['path']
 
-    for file_ in os.listdir(path):
-        if not file_.endswith('.rst'):
-            continue
-
-        document = parse_article(os.path.join(path, file_))
-        document['filename'] = file_
-        url = '/posts/%s/%s/%s/%s'
-        url = url % ('2016', '01', '11', slugify(document['title']))
-        document['url'] = url
-
-        articles.append(document)
+    for root, dirs, files in os.walk(path):
+        for file_ in files:
+            if not file_.endswith('.rst'):
+                continue
+            document = parse_article(os.path.join(root, file_))
+            document['filename'] = os.path.join(root[len(path):], file_)
+            articles.append(document)
 
     articles.sort(by_date)
+
     return {"category": name, 'articles': articles,
             "data": data}

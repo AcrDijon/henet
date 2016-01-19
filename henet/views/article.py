@@ -4,7 +4,7 @@ from henet.rst.parse import parse_article
 
 
 
-@route("/category/<category>/<article>")
+@route("/category/<category>/<article:path>")
 @app.view("article")
 def article(category, article):
     cat_path = dict(app.vars['categories'])[category]['path']
