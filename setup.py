@@ -5,7 +5,7 @@ from henet import __version__
 install_requires = ['bottle', 'python-dateutil', 'beaker',
                     'konfig', 'docutils', 'rst2rst',
                     'python-Levenshtein', 'pelican',
-                    'konfig']
+                    'konfig', 'bson']
 
 
 try:
