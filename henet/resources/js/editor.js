@@ -52,18 +52,6 @@ function setPreviewHtml(html) {
     doc.open();
     doc.writeln(html);
     doc.close();
-    var body = doc.body;
-
-    var titleText = null;
-    var headElem = $('h1', body)[0] || $('h2', body)[0] || $('h3', body)[0] || $('h4', body)[0] || $('h5', body)[0] || $('p', body)[0];
-    if (headElem) {
-        titleText = headElem.innerText || headElem.textContent;
-    }
-    if (titleText) {
-        $('head title').html(titleText.substr(0, 55) + ' - ' + window.baseTitle);
-    } else {
-        $('head title').html(window.baseTitle);
-    }
 }
 
 

@@ -14,7 +14,7 @@ def by_date(article1, article2):
 @app.view("category")
 def category(name):
     articles = []
-    path = app.vars['categories'][name]['path']
+    path = dict(app.vars['categories'])[name]['path']
     for file_ in os.listdir(path):
         if not file_.endswith('.rst'):
             continue

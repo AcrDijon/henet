@@ -11,15 +11,24 @@ body {
 	clear: both;
 }
 
+.linedwrap {
+  min-height: 400px;
+  float: left;
+}
+
+.visual {
+  min-height: 400px;
+}
+
 #body {
   min-height: 400px;
-  width: 90%;
+  width: 45%;
   font-size: 10pt;
   font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
   line-height: normal !important;
+  white-space: pre-line;
 }
 
 #preview {
-  width: 90%;
-  min-height: 400px
+  float: left;
 }

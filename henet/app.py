@@ -53,12 +53,12 @@ def heartbeat():
     return "A-OK ya'll!"
 
 
-CATS = {'Actualités':
-            {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/actu'},
-'Résultats':
-            {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/resultats'},
-
-            }
+CATS = [
+  ['Actualités', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/actu'}],
+  ['Résultats', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/resultats'}],
+  ['Foulees', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/foulees'}],
+  ['Pages statiques', {'path': '/Users/tarek/Dev/github.com/acr-dijon.org/content/pages'}]
+]
 
 
 def main():

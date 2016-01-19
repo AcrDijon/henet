@@ -5,7 +5,6 @@
 <tr>
    <th>Date</th>
    <th>Titre</th>
-   <th>Url</th>
  </tr>
 % for article in articles:
 <tr class="article">
@@ -15,15 +14,9 @@
     {{ article['title'] }}
   </a>
  </td>
- <td>
-  <a href="http://acr-dijon.org/{{article['url']}}">
-    {{ article['url'] }}
-  </a>
- </td>
-
 <tr>
 % end
 
 </table>
 
-% rebase base title = category
+% rebase('base.tpl', page_title=category)

@@ -13,18 +13,16 @@
  </div>
 
 
- <div class="form-group">
+ <div class="form-group visual">
    <textarea class="form-control" id="body" rows="5" id="content">{{article['body']}}</textarea>
-  </div>
 
-<div class="form-group">
-  <iframe id="preview"
-        src="/category/{{ category }}/{{filename}}/preview">
-Preview
-</iframe>
-  </div>
+   <iframe id="preview" src="/category/{{ category }}/{{filename}}/preview">
+    Preview
+   </iframe>
+   <span style="clear: both"></span>
+ </div>
 
- <button type="submit" class="btn btn-default">Sauvegarder</button>
+ <!--button type="submit" class="btn btn-default">Sauvegarder</button-->
 
 </form>
 
@@ -37,15 +35,17 @@ Preview
    language: "fr"
  });
 
-$("#body").linedtextarea();
+ $("#body").linedtextarea();
 
  window.baseTitle = $('head title').text();
 
  $('textarea#body').bind('change', genPreview);
  timerId = window.setInterval(genPreview, 900);
 
- $('textarea#body').scroll(syncScrollPosition);
+ //$('textarea#body').scroll(syncScrollPosition);
+ $("#preview").height($("div.linedwrap").outerHeight());
+ $("#preview").width($("div.linedwrap").outerWidth());
 
 </script>
 
-% rebase base title = "article"
+% rebase('base.tpl', page_title=article['title'], actionbar=False, span=12)
