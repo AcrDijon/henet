@@ -1,6 +1,7 @@
 import os
 import hashlib
 import bson
+import datetime
 
 from henet.rst.parse import parse_article as parse
 from henet.article import Article
@@ -8,8 +9,10 @@ from henet.article import Article
 
 # XXX todo indexing & caching
 def by_date(article1, article2):
-    return -cmp(article1['metadata']['date'].replace(tzinfo=None),
-                article2['metadata']['date'].replace(tzinfo=None))
+    now = datetime.datetime.now()
+
+    return -cmp(article1['metadata'].get('date', now).replace(tzinfo=None),
+                article2['metadata'].get('date', now).replace(tzinfo=None))
 
 
 def file_age(path):

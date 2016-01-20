@@ -12,7 +12,7 @@
 <tbody>
 % for article in articles:
 <tr>
- <td>{{ article['metadata']['date'].strftime('%d/%m/%Y') }}</td>
+ <td>{{ article['metadata'].get('date', now).strftime('%d/%m/%Y') }}</td>
  <td>
   <a href="/category/{{ category }}{{article['filename']}}">
     {{ article['title'] }}

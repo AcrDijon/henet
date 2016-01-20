@@ -18,6 +18,7 @@ def article(category, article):
     article_path = os.path.join(cat_path, article)
     article = parse_article(article_path, cache_dir, cat_path)
     return {'article': article, 'category': category,
+            'now': datetime.datetime.now(),
             'filename': os.path.split(article_path)[-1]}
 
 

@@ -16,12 +16,12 @@
 
  <div class="form-group">
    <label for="date">Date:</label>
-   <input class="form-control" id="date" name="data" type="text" value="{{article['metadata']['date'].strftime('%d/%m/%Y') }}"></input>
+   <input class="form-control" id="date" name="data" type="text" value="{{article['metadata'].get('date', now).strftime('%d/%m/%Y') }}"></input>
  </div>
 
  <div class="form-group">
    <label for="eventdate">Date Evenement:</label>
-   <input class="form-control" id="eventdate" name="eventdate" type="text" value="{{article['metadata'].get('eventdate', article['metadata']['date']).strftime('%d/%m/%Y') }}"></input>
+   <input class="form-control" id="eventdate" name="eventdate" type="text" value="{{article['metadata'].get('eventdate', now).strftime('%d/%m/%Y') }}"></input>
  </div>
 
 
