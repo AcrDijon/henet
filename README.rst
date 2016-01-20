@@ -11,5 +11,6 @@ Later:
 
 - comments managment
 - spelling, grammar
+- assets managment
 
 

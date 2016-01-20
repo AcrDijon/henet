@@ -18,6 +18,7 @@ from docutils import io, core
 
 from Levenshtein import distance, jaro
 from pelican.utils import get_date
+from henet.article import Article
 
 
 class Writer(writers.Writer):
@@ -33,16 +34,6 @@ class Writer(writers.Writer):
         self.visitor = self.translator_class(self.document)
         self.document.walkabout(self.visitor)
         self.output = self.visitor.astext()
-
-
-class Article(dict):
-    def render(self):
-        res = self['title_source'] + '\n\n'
-        res += self['metadata_source'] + '\n\n'
-        res += self['body']
-        if not res.endswith('\n'):
-            res += '\n'
-        return res
 
 
 class RSTTranslator(nodes.NodeVisitor):
@@ -63,7 +54,6 @@ class RSTTranslator(nodes.NodeVisitor):
         raise SkipNode()
 
     def visit_docinfo(self, node):
-        metadata = {}
         for info in node.children:
             if info.tagname == 'field':
                 name, body = info.children
@@ -71,16 +61,14 @@ class RSTTranslator(nodes.NodeVisitor):
                 value = body.astext()
                 if name in ('date', 'eventdate'):
                     value = get_date(value)
-                metadata[name] = value
+                self.article.set_metadata(name, value)
             else:
                 if info.tagname.lower() in ('date', 'eventdate'):
                     value = get_date(info.astext())
                 else:
                     value = info.astext()
-                metadata[info.tagname.lower()] = value
+                self.article.set_metadata(info.tagname.lower(), value)
 
-        self.article['metadata'] = metadata
-        self.article['metadata_source'] = node.realsource.strip()
         self.result.append(node.realsource)
         self.result.append('')
         raise SkipNode()

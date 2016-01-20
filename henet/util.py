@@ -3,7 +3,7 @@ import hashlib
 import bson
 
 from henet.rst.parse import parse_article as parse
-
+from henet.article import Article
 
 
 # XXX todo indexing & caching
@@ -28,14 +28,14 @@ def parse_article(path, cache_dir, root_path):
     cache = os.path.join(cache_dir, md5(str(age)+path.encode('utf8')))
     if os.path.exists(cache):
         with open(cache) as f:
-            document = bson.loads(f.read())
+            article = Article(bson.loads(f.read()))
     else:
-        document = parse(path)
-        document['filename'] = path[len(root_path):]
+        article = parse(path)
+        article['filename'] = path[len(root_path):]
         with open(cache, 'w') as f:
-            f.write(bson.dumps(document))
+            f.write(bson.dumps(article))
 
-    return document
+    return article
 
 
 def parse_articles(path, cache_dir, page=-1, page_size=20):
