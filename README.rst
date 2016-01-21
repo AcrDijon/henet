@@ -7,10 +7,4 @@ Web Admin for the ACR Blog with the following features:
 - cleanup of the reSTructuredText
 - live preview
 
-Later:
-
-- comments managment
-- spelling, grammar
-- assets managment
-
-
+See https://github.com/AcrDijon/henet/issues for planned features
