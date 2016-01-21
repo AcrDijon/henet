@@ -37,6 +37,9 @@ def main():
     cats = []
     for cat in config['henet']['categories']:
         values = dict(config[cat].items())
+        # defaults
+        if not 'can_create' in values:
+            values['can_create'] = True
         cats.append((cat, values))
 
     app_stack.vars = app.vars = {'categories': cats}

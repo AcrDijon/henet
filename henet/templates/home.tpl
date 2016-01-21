@@ -10,12 +10,12 @@
  </div>
 
  <p>
-  <input id="actu" type="submit" class="btn btn-lg btn-primary"
-         name="add_actus" value="Actualité"></input>
-  <input id="actu" type="submit" class="btn btn-lg btn-primary"
-         name="add_resultat" value="Résultat"></input>
-  <input id="actu" type="submit" class="btn btn-lg btn-primary"
-         name="add_foulees" value="Foulées"></input>
+  % for cat, data  in categories:
+    % if data['can_create']:
+    <input id="actu" type="submit" class="btn btn-lg btn-primary"
+           name="add_{{cat}}" value="{{data['title']}}"></input>
+    % end
+  % end
  </p>
 </form>
 

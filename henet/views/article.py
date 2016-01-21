@@ -78,12 +78,12 @@ def create_article():
     date = datetime.datetime.now()
     article.set_metadata('date', date)
 
-    if u'add_actus' in data:
-        category = u'actus'
-    elif u'add_foulees' in data:
-        category = u'foulees'
-    else:
-        category = u'resultats'
+    category = u'resultats'
+
+    for key, val in data.items():
+        if key.startswith(u'add_'):
+            category = key[len(u'add_'):]
+            break
 
     article.set_metadata('category', category)
 
