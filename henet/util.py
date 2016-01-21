@@ -7,7 +7,6 @@ from henet.rst.parse import parse_article as parse
 from henet.article import Article
 
 
-# XXX todo indexing & caching
 def by_date(article1, article2):
     now = datetime.datetime.now()
 

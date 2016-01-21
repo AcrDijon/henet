@@ -7,6 +7,7 @@
   <tr>
    <th>Date</th>
    <th>Titre</th>
+   <th>Action</th>
    </tr>
   </thead>
 <tbody>
@@ -17,6 +18,14 @@
   <a href="/category/{{ category }}{{article['filename']}}">
     {{ article['title'] }}
   </a>
+ </td>
+ <td>
+  <form action="/delete/category/{{ category }}{{article['filename']}}"
+        method="POST" onsubmit="return confirm('Confirmez-vous la suppression?');">
+    <button type="submit" class="btn btn-xs btn-danger">
+      <span class="glyphicon glyphicon-trash"></span>
+    </button>
+  </form>
  </td>
 </tr>
 % end

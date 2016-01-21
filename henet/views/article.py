@@ -2,11 +2,19 @@
 import os
 import datetime
 
-from bottle import route, request, app, post, redirect
+from bottle import route, request, app, post, redirect, delete
 from pelican.utils import slugify
 
 from henet.util import parse_article
 from henet.article import Article
+
+
+@post("/delete/category/<category>/<article:path>")
+def del_article(category, article):
+    cat_path = dict(app.vars['categories'])[category]['path']
+    article_path = os.path.join(cat_path, article)
+    os.remove(article_path)
+    redirect('/category/%s' % category)
 
 
 @route("/category/<category>/<article:path>")
