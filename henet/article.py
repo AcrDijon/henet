@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Article(dict):
     def __init__(self, *args, **kw):
         dict.__init__(self, *args, **kw)

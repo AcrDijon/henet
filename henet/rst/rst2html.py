@@ -1,13 +1,8 @@
-# from rsted
-#
+# Adapted from rsted
 import os
-import sys
 from os.path import join as J
-#import codecs
-
 from docutils.core import publish_string
 
-#utf8codec = codecs.lookup('utf-8')
 
 # see http://docutils.sourceforge.net/docs/user/config.html
 default_rst_opts = {
@@ -34,7 +29,7 @@ def rst2html(rst, theme=None, opts=None):
     stylesheets = ['basic.css']
     if theme:
         stylesheets.append('%s/%s.css' % (theme, theme))
-    rst_opts['stylesheet'] = ','.join([J(THEMES, p) for p in stylesheets ])
+    rst_opts['stylesheet'] = ','.join([J(THEMES, p) for p in stylesheets])
 
     out = publish_string(rst, writer_name='html', settings_overrides=rst_opts)
 

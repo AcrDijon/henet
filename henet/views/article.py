@@ -2,17 +2,16 @@
 import os
 import datetime
 
-from bottle import view, route, request, app, post, redirect
+from bottle import route, request, app, post, redirect
 from pelican.utils import slugify
 
 from henet.util import parse_article
 from henet.article import Article
 
 
-
 @route("/category/<category>/<article:path>")
 @app.view("article")
-def article(category, article):
+def get_article(category, article):
     cache_dir = app._config['henet']['cache_dir']
     cat_path = dict(app.vars['categories'])[category]['path']
     article_path = os.path.join(cat_path, article)
@@ -23,7 +22,7 @@ def article(category, article):
 
 
 @post("/category/<category>/<article:path>")
-def article(category, article):
+def post_article(category, article):
     data = dict(request.POST.decode())
     cache_dir = app._config['henet']['cache_dir']
     cat_path = dict(app.vars['categories'])[category]['path']

@@ -1,22 +1,11 @@
-import os
-import patch
-import datetime
-import re
-
-import dateutil.parser
+from henet.rst import patch  # NOQA
 
 from docutils.parsers.rst import Parser
-from docutils.utils import new_document
 from docutils.frontend import OptionParser
-from docutils.parsers.rst.states import RSTState, Body, Text
-from docutils import nodes
-from docutils.nodes import fully_normalize_name as normalize_name
-from docutils import writers, statemachine
-from docutils.transforms.frontmatter import DocInfo
-from docutils.nodes import Element, SkipNode
+from docutils import nodes, writers
+from docutils.nodes import SkipNode
 from docutils import io, core
 
-from Levenshtein import distance, jaro
 from pelican.utils import get_date
 from henet.article import Article
 
@@ -184,7 +173,6 @@ class RSTTranslator(nodes.NodeVisitor):
 
 
 def parse_article(filename, destination=None):
-    parser = Parser()
     settings = OptionParser(components=(Parser,)).get_default_values()
     pub = core.Publisher(None, None, None, settings=settings)
     pub.set_components('standalone', 'restructuredtext', 'html')

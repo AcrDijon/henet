@@ -1,27 +1,17 @@
-import os
-from docutils.parsers.rst import Parser
-from docutils.utils import new_document
-from docutils.frontend import OptionParser
 from docutils.parsers.rst.states import RSTState, Body, Text
 from docutils import nodes
 from docutils.nodes import fully_normalize_name as normalize_name
-from docutils import writers, statemachine
+from docutils import statemachine
 from docutils.transforms.frontmatter import DocInfo
-
-
-from docutils.nodes import Element, SkipNode
+from docutils.nodes import Element
+from docutils.utils.roman import toRoman
 
 
 def Element__init__(self, rawsource='', *children, **attributes):
     self._old_init(rawsource, *children, **attributes)
-    #print(self)
-    #if self.__class__.__name__ == 'bullet_list':
-    #    import pdb; pdb.set_trace()
-
 
 Element._old_init = Element.__init__
 Element.__init__ = Element__init__
-
 
 
 def section(self, title, source, style, lineno, messages):
@@ -53,11 +43,9 @@ def new_subsection(self, title, lineno, messages, source, style):
             self.state_machine.input_lines[offset:], input_offset=absoffset,
             node=section_node, match_titles=True)
     self.goto_line(newabsoffset)
-    if memo.section_level <= mylevel: # can't handle next section?
-        raise EOFError              # bubble up to supersection
-    # reset section_level; next pass will detect it properly
+    if memo.section_level <= mylevel:
+        raise EOFError
     memo.section_level = mylevel
-
 
 
 RSTState.new_subsection = new_subsection
@@ -67,8 +55,8 @@ def field(self, match):
     name = self.parse_field_marker(match)
     src, srcline = self.state_machine.get_source_and_line()
     lineno = self.state_machine.abs_line_number()
-    indented, indent, line_offset, blank_finish = \
-            self.state_machine.get_first_known_indented(match.end())
+    first = self.state_machine.get_first_known_indented
+    indented, indent, line_offset, blank_finish = first(match.end())
     field_node = nodes.field()
     field_node.realsource = match.string
     field_node.source = src
@@ -80,6 +68,7 @@ def field(self, match):
     if indented:
         self.parse_field_body(indented, line_offset, field_body)
     return field_node, blank_finish
+
 
 def field_marker(self, match, context, next_state):
     """Field list item."""
@@ -97,8 +86,8 @@ def field_marker(self, match, context, next_state):
     if not blank_finish:
         self.parent += self.unindent_warning('Field list')
 
-    raw = '\n'.join(self.state_machine.input_lines[offset-1:newline_offset-2].data)
-    field_list.realsource = raw
+    raw = self.state_machine.input_lines[offset-1:newline_offset-2].data
+    field_list.realsource = '\n'.join(raw)
     return [], next_state, []
 
 
@@ -298,7 +287,6 @@ def indent(self, match, context, next_state):
             return ''
         return indent + line
 
-    index = 1
     prefix = '  '
 
     for child in definitionlist.children:
@@ -311,9 +299,7 @@ def indent(self, match, context, next_state):
                 raw.append(prefix + definition)
         raw.append('')
 
-
     definitionlist.rawsource = '\n'.join(raw).strip()
-
     self.goto_line(newline_offset)
     if not blank_finish:
         self.parent += self.unindent_warning('Definition list')
@@ -321,7 +307,6 @@ def indent(self, match, context, next_state):
 
 
 Text.indent = indent
-
 
 
 def apply(self):
@@ -343,5 +328,3 @@ def apply(self):
 
 
 DocInfo.apply = apply
-
-

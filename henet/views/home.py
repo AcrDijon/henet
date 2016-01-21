@@ -1,4 +1,4 @@
-from bottle import view, route, request, app
+from bottle import route, app
 
 
 @route("/")

@@ -1,8 +1,5 @@
-import os
 import datetime
-
-from bottle import view, route, request, app, post, redirect
-from pelican.utils import slugify
+from bottle import route, request, app
 from henet.util import parse_articles
 
 
@@ -18,6 +15,3 @@ def category(name):
     return {"category": name, 'articles': articles,
             "data": data, "total_pages": total_pages,
             "current_page": page, "now": datetime.datetime.now()}
-
-
-
