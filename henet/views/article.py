@@ -2,11 +2,13 @@
 import os
 import datetime
 
-from bottle import route, request, app, post, redirect, delete
+from bottle import route, request, app, post, redirect
 from pelican.utils import slugify
 
 from henet.util import parse_article
 from henet.article import Article
+from henet.events import (emit, EVENT_CHANGED_CONTENT, EVENT_CREATED_CONTENT,
+                          EVENT_DELETED_CONTENT)
 
 
 @post("/delete/category/<category>/<article:path>")
@@ -14,6 +16,7 @@ def del_article(category, article):
     cat_path = dict(app.vars['categories'])[category]['path']
     article_path = os.path.join(cat_path, article)
     os.remove(article_path)
+    emit(EVENT_DELETED_CONTENT, article_path=article_path)
     redirect('/category/%s' % category)
 
 
@@ -50,6 +53,7 @@ def post_article(category, article):
     with open(article_path, 'w') as f:
         f.write(article.render().encode('utf8'))
 
+    emit(EVENT_CHANGED_CONTENT, article_path=article_path)
     redirect('/category/%s%s' % (category, article['filename']))
 
 
@@ -107,4 +111,5 @@ def create_article():
     with open(fullfilename + '.rst', 'w') as f:
         f.write(article.render().encode('utf8'))
 
+    emit(EVENT_CREATED_CONTENT, article_path=fullfilename)
     redirect('/category/%s/%s' % (category, filename + '.rst'))

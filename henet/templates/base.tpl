@@ -65,6 +65,9 @@
                 <!-- CONTENT -->
                 <div class="row">
                     <div class="span12" id="contentContainer">
+                        % for alert in get_alerts():
+                        <div class="alert alert-success" role="alert">{{alert}}</div>
+                        % end
                         %include
                     </div>
                 </div>

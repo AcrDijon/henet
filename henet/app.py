@@ -8,6 +8,8 @@ from bottle import route, run, view, app as app_stack
 from bottle import static_file
 import konfig
 
+from henet.events import subscribe, ALL_EVENTS, event2str
+
 
 HERE = os.path.dirname(__file__)
 TEMPLATES = os.path.join(HERE, 'templates')
@@ -25,6 +27,22 @@ def serve_static(filepath):
     return static_file(filepath, root=RESOURCES_PATH)
 
 
+_alerts = []
+
+
+def add_alert(event, **data):
+    # per-thread ? per-user ?
+    _alerts.append(event2str(event))
+
+
+def get_alerts():
+    while True:
+        try:
+            yield _alerts.pop()
+        except IndexError:
+            break
+
+
 def main():
     if len(sys.argv) > 1:
         config = konfig.Config(sys.argv[1])
@@ -38,15 +56,17 @@ def main():
     for cat in config['henet']['categories']:
         values = dict(config[cat].items())
         # defaults
-        if not 'can_create' in values:
+        if 'can_create' not in values:
             values['can_create'] = True
         cats.append((cat, values))
 
-    app_stack.vars = app.vars = {'categories': cats}
+    app_stack.vars = app.vars = {'categories': cats, 'get_alerts': get_alerts}
     app_stack.view = partial(view, **app.vars)
     app_stack._config = app._config = config
 
     from henet import views  # NOQA
+
+    subscribe(ALL_EVENTS, add_alert)
 
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
