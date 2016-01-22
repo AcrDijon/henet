@@ -92,7 +92,7 @@ and the form to add comments. Example::
        Comment: <input type="text" name="text" id="text"/>
        <button type="button" onclick="post_comment('#henet_comment', {{HENET_SERVER}})">Add comment</button>
      </form>
-     <script src="http://localhost:8080/resources/js/henet.js"></script>
+     <script src="{{HENET_SERVER}}/resources/js/henet.js"></script>
     {% endif %}
 
 
