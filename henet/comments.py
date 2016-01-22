@@ -74,8 +74,8 @@ class Thread(object):
         pass
 
     def get_comments(self):
-        return sorted(self.comments, key=lambda comment:
-                      -comment.date.toordinal())
+        return sorted(self.comments,
+                      key=lambda comment: -comment.date.toordinal())
 
     def render(self):
         lines = [u':uuid: %s' % self.uuid, u'', u'----', u'']

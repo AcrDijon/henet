@@ -31,7 +31,6 @@ class ThreadWriter(Writer):
         self.translator_class = RSTThreadTranslator
 
 
-
 class RSTTranslator(nodes.NodeVisitor):
     def __init__(self, *args, **kw):
         nodes.NodeVisitor.__init__(self, *args, **kw)
@@ -128,7 +127,6 @@ class RSTTranslator(nodes.NodeVisitor):
     def depart_transition(self, node):
         pass
 
-
     def visit_comment(self, node):
         self.result.append(node.rawsource)
         raise SkipNode()
@@ -196,8 +194,8 @@ class RSTThreadTranslator(RSTTranslator):
                 name = name.astext()
                 if name != 'uuid':
                     continue
-                value = body.astext()
                 self.uuid = body.astext()
+
         raise SkipNode()
 
     def visit_transition(self, node):
@@ -244,7 +242,6 @@ class RSTThreadTranslator(RSTTranslator):
 
     def astext(self):
         return ''   # XXX not needed for now
-
 
 
 def parse_article(filename, destination=None):
