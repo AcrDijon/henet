@@ -128,6 +128,12 @@ class ArticleThread(object):
                                      'article_' + hashed_uuid + '.rst')
         self.load()
 
+    def add_comment(self, *args, **kw):
+        if self.thread is None:
+            self.thread = Thread(self.storage_dir)
+            self.save()
+        return self.thread.add_comment(*args, **kw)
+
     def asjson(self):
         if self.thread is None:
             comments = []
@@ -142,6 +148,7 @@ class ArticleThread(object):
     def save(self):
         with open(self.filename, 'w') as f:
             f.write(self.render().encode('utf8'))
+        self.thread.save()
 
     def load(self):
         if not os.path.exists(self.filename):

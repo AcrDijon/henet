@@ -4,7 +4,8 @@ from henet.comments import ArticleThread
 from henet.rst.rst2html import rst2html
 
 
-storage_dir = '/tmp/comments'
+# xxx read config
+storage_dir = '/Users/tarek/Dev/github.com/acr-dijon.org/comments/'
 
 
 # xxx cache

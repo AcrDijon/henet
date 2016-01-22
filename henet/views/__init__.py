@@ -1,1 +1,1 @@
-from henet.views import home, category, article, preview  # NOQA
+from henet.views import home, category, article, preview, comments  # NOQA
