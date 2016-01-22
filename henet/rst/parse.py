@@ -25,6 +25,13 @@ class Writer(writers.Writer):
         self.output = self.visitor.astext()
 
 
+class ThreadWriter(Writer):
+    def __init__(self):
+        Writer.__init__(self)
+        self.translator_class = RSTThreadTranslator
+
+
+
 class RSTTranslator(nodes.NodeVisitor):
     def __init__(self, *args, **kw):
         nodes.NodeVisitor.__init__(self, *args, **kw)
@@ -121,6 +128,7 @@ class RSTTranslator(nodes.NodeVisitor):
     def depart_transition(self, node):
         pass
 
+
     def visit_comment(self, node):
         self.result.append(node.rawsource)
         raise SkipNode()
@@ -172,6 +180,73 @@ class RSTTranslator(nodes.NodeVisitor):
         return res
 
 
+class RSTThreadTranslator(RSTTranslator):
+    def __init__(self, *args, **kw):
+        RSTTranslator.__init__(self, *args, **kw)
+        self.comments = []
+        self.uuid = None
+        self.current_comment_index = 0
+        self.current_comment = dict()
+        self.next_field_name = None
+
+    def visit_docinfo(self, node):
+        for info in node.children:
+            if info.tagname == 'field':
+                name, body = info.children
+                name = name.astext()
+                if name != 'uuid':
+                    continue
+                value = body.astext()
+                self.uuid = body.astext()
+        raise SkipNode()
+
+    def visit_transition(self, node):
+        if self.current_comment_index > 0:
+            self.current_comment['text'] = u'\n'.join(self.result)
+            self.comments.append(self.current_comment)
+
+        # next comment
+        self.result = []
+        self.current_comment_index += 1
+        self.current_comment = dict()
+
+    depart_document = visit_transition
+
+    def visit_field_list(self, node):
+        pass
+
+    def visit_field(self, node):
+        pass
+
+    def visit_field_name(self, node):
+        self.current_field_name = node.astext()
+        raise SkipNode()
+
+    def visit_field_body(self, node):
+        if self.current_field_name == 'date':
+            value = get_date(node.astext())
+        else:
+            value = node.astext()
+        self.current_comment[self.current_field_name] = value
+        raise SkipNode()
+
+    def depart_field_list(self, node):
+        pass
+
+    def depart_field(self, node):
+        pass
+
+    def depart_field_name(self, node):
+        pass
+
+    def depart_field_body(self, node):
+        pass
+
+    def astext(self):
+        return ''   # XXX not needed for now
+
+
+
 def parse_article(filename, destination=None):
     settings = OptionParser(components=(Parser,)).get_default_values()
     pub = core.Publisher(None, None, None, settings=settings)
@@ -192,3 +267,25 @@ def parse_article(filename, destination=None):
         raise Exception(str(e))
 
     return pub.writer.visitor.article
+
+
+def parse_thread(filename, destination=None):
+    settings = OptionParser(components=(Parser,)).get_default_values()
+    pub = core.Publisher(None, None, None, settings=settings)
+    pub.set_components('standalone', 'restructuredtext', 'html')
+    pub.writer = ThreadWriter()
+    pub.set_source(None, filename)
+
+    if destination is not None:
+        pub.set_destination(None, destination)
+    else:
+        pub.destination_class = io.NullOutput
+        pub.set_destination(None, None)
+
+    pub.process_programmatic_settings(None, None, None)
+    try:
+        pub.publish()
+    except SystemExit as e:
+        raise Exception(str(e))
+
+    return pub.writer.visitor.uuid, pub.writer.visitor.comments
