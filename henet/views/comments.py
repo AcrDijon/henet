@@ -18,6 +18,7 @@ def enable_cors(func):
     return _enable_cors
 
 
+# XXX needs rate limiting
 @route("/comments", method=['OPTIONS', 'POST'])
 @enable_cors
 def new_comment():

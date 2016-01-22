@@ -13,6 +13,8 @@ def add_comments(generator, content):
     thread = ArticleThread(storage_dir, content.url)
     thread = thread.asjson()
     for comment in thread['comments']:
+        # XXX rst2html renders a whole html page, we just want an
+        # html snippet we can add in our page
         comment['text'] = rst2html(comment['text'], theme='acr')
     content.metadata["comments"] = thread
 

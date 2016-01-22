@@ -8,8 +8,8 @@
    <th>Date</th>
    <th>Auteur</th>
    <th>Commentaire</th>
-   <th>Activer</th>
-   <th>Rejeter</th>
+   <th>Article</th>
+   <th>Actions</th>
    </tr>
   </thead>
 <tbody>
@@ -23,14 +23,15 @@
    </a>
   </td>
  <td>
+  Titre+lien article
+ </td>
+ <td>
   <form action="/comments/{{ comment.uuid }}/activate"
         method="POST">
     <button type="submit" class="btn btn-xs btn-success">
       <span class="glyphicon glyphicon-ok"></span>
     </button>
   </form>
- </td>
- <td>
   <form action="/comments/{{ comment.uuid }}/reject"
         method="POST">
     <button type="submit" class="btn btn-xs btn-danger">
