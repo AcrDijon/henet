@@ -7,18 +7,26 @@ from henet.rst.parse import parse_thread
 
 
 class Comment(object):
-    def __init__(self, uuid=None, title='', text='', author='Anonymous',
+    def __init__(self, uuid=None, text='', author='Anonymous',
                  date=None, active=True):
         if uuid is None:
             uuid = str(uuid4())
         self.uuid = uuid
-        self.title = title
         self.text = text
         self.author = author
         if date is None:
             date = datetime.datetime.now()
         self.date = date
         self.active = active
+
+    def asjson(self):
+        res = {}
+        res['uuid'] = self.uuid
+        res['text'] = self.text
+        res['author'] = self.author
+        res['date'] = self.date
+        res['active'] = self.active
+        return res
 
     def render(self):
         def _date2str(date):
@@ -31,7 +39,6 @@ class Comment(object):
 
         lines = []
         for field, value in ((u'uuid', self.uuid),
-                             (u'title', self.title),
                              (u'author', self.author),
                              (u'date', _date2str(self.date)),
                              (u'active', _bool2str(self.active))):
@@ -65,16 +72,15 @@ class Thread(object):
         self.comments = []
         for comment in comments:
             c = Comment(uuid=comment['uuid'])
-            c.title = comment.get('title', '')
             c.author = comment.get('author', '')
             c.date = comment.get('date', datetime.datetime.now())
             c.text = comment.get('text', '').strip()
             c.active = comment.get('active', False)
             self.comments.append(c)
 
-    def add_comment(self, title, text, author='Anonymous', date=None,
+    def add_comment(self, text, author='Anonymous', date=None,
                     active=False):
-        comment = Comment(title=title, text=text, author=author, date=date,
+        comment = Comment(text=text, author=author, date=date,
                           active=False)
         self.comments.append(comment)
         return comment
@@ -121,6 +127,17 @@ class ArticleThread(object):
         self.filename = os.path.join(self.storage_dir,
                                      'article_' + hashed_uuid + '.rst')
         self.load()
+
+    def asjson(self):
+        if self.thread is None:
+            comments = []
+        else:
+            comments = [comment.asjson() for comment in
+                        self.thread.get_comments()]
+
+        return {'article_uuid': self.article_uuid,
+                'thread_uuid': self.thread_uuid,
+                'comments': comments}
 
     def save(self):
         with open(self.filename, 'w') as f:

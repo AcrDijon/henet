@@ -29,9 +29,9 @@ class TestThread(unittest.TestCase):
         later = now + datetime.timedelta(days=1)
         way_later = later + datetime.timedelta(days=15)
 
-        c1 = thread.add_comment(u"Mémé", "Ouai **ouai**", date=now)
-        thread.add_comment(u"Mémé2", "Ouai **ouai**", date=later)
-        c3 = thread.add_comment(u"Mémé3", "Ouai **ouai**", date=way_later)
+        c1 = thread.add_comment(u"Ouai **ouai1**", date=now)
+        thread.add_comment(u"Ouai **ouai**", date=later)
+        c3 = thread.add_comment(u"Ouai **ouai3**", date=way_later)
 
         thread.activate_comment(c1.uuid)
         thread.activate_comment(c3.uuid)
@@ -48,8 +48,7 @@ class TestThread(unittest.TestCase):
         comment = comments[0]
 
         # most recent first
-        self.assertEqual(comment.title, u"Mémé3")
-        self.assertEqual(comment.text, u"Ouai **ouai**")
+        self.assertEqual(comment.text, u"Ouai **ouai3**")
 
     def test_article_thread(self):
         tempdir = self.get_tempdir()
@@ -59,9 +58,9 @@ class TestThread(unittest.TestCase):
         later = now + datetime.timedelta(days=1)
         way_later = later + datetime.timedelta(days=15)
 
-        c1 = thread.add_comment(u"Mémé", "Ouai **ouai**", date=now)
-        thread.add_comment(u"Mémé2", "Ouai **ouai**", date=later)
-        c3 = thread.add_comment(u"Mémé3", "Ouai **ouai**", date=way_later)
+        c1 = thread.add_comment(u"Ouai **ouai**", date=now)
+        thread.add_comment(u"Ouai **ouai**", date=later)
+        c3 = thread.add_comment(u"Ouai **ouai3**", date=way_later)
 
         thread.activate_comment(c1.uuid)
         thread.activate_comment(c3.uuid)
@@ -84,5 +83,4 @@ class TestThread(unittest.TestCase):
         comment = comments[0]
 
         # most recent first
-        self.assertEqual(comment.title, u"Mémé3")
-        self.assertEqual(comment.text, u"Ouai **ouai**")
+        self.assertEqual(comment.text, u"Ouai **ouai3**")
