@@ -7,7 +7,7 @@ from henet.rst.parse import parse_thread
 
 class Comment(object):
     def __init__(self, uuid=None, title='', text='', author='Anonymous',
-                 date=None):
+                 date=None, active=True):
         if uuid is None:
             uuid = str(uuid4())
         self.uuid = uuid
@@ -17,18 +17,25 @@ class Comment(object):
         if date is None:
             date = datetime.datetime.now()
         self.date = date
+        self.active = active
 
     def render(self):
         def _date2str(date):
             return date.strftime('%Y-%m-%d %H:%M')
 
+        def _bool2str(value):
+            if value:
+                return '1'
+            return '0'
+
         lines = []
         for field, value in ((u'uuid', self.uuid),
                              (u'title', self.title),
                              (u'author', self.author),
-                             (u'date', _date2str(self.date))):
-
+                             (u'date', _date2str(self.date)),
+                             (u'active', _bool2str(self.active))):
             lines.append(u':%s: %s' % (field, value))
+
         lines.append('')
         lines.append(self.text)
         return u'\n'.join(lines)
@@ -60,12 +67,21 @@ class Thread(object):
             c.author = comment.get('author', '')
             c.date = comment.get('date', datetime.datetime.now())
             c.text = comment.get('text', '').strip()
+            c.active = comment.get('active', False)
             self.comments.append(c)
 
-    def add_comment(self, title, text, author='Anonymous', date=None):
-        comment = Comment(title=title, text=text, author=author, date=date)
+    def add_comment(self, title, text, author='Anonymous', date=None,
+                    active=False):
+        comment = Comment(title=title, text=text, author=author, date=date,
+                          active=False)
         self.comments.append(comment)
         return comment
+
+    def activate_comment(self, cid):
+        for comment in self.comments:
+            if comment.uuid == cid:
+                comment.active = True
+                break
 
     def modify_comment(self, cid, **fields):
         pass
@@ -73,8 +89,9 @@ class Thread(object):
     def delete_comment(self, cid):
         pass
 
-    def get_comments(self):
-        return sorted(self.comments,
+    def get_comments(self, include_inactive=False):
+        return sorted([comment for comment in self.comments
+                       if include_inactive or comment.active],
                       key=lambda comment: -comment.date.toordinal())
 
     def render(self):

@@ -30,14 +30,21 @@ class TestThread(unittest.TestCase):
         later = now + datetime.timedelta(days=1)
         way_later = later + datetime.timedelta(days=15)
 
-        thread.add_comment(u"Mémé", "Ouai **ouai**", date=now)
+        c1 = thread.add_comment(u"Mémé", "Ouai **ouai**", date=now)
         thread.add_comment(u"Mémé2", "Ouai **ouai**", date=later)
-        thread.add_comment(u"Mémé3", "Ouai **ouai**", date=way_later)
+        c3 = thread.add_comment(u"Mémé3", "Ouai **ouai**", date=way_later)
+
+        thread.activate_comment(c1.uuid)
+        thread.activate_comment(c3.uuid)
 
         thread.save()
         thread.load()
 
+        # we have 2 active comments
         comments = thread.get_comments()
+        self.assertEqual(len(comments), 2)
+
+        comments = thread.get_comments(include_inactive=True)
         self.assertEqual(len(comments), 3)
         comment = comments[0]
 

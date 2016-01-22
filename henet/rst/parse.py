@@ -223,6 +223,8 @@ class RSTThreadTranslator(RSTTranslator):
     def visit_field_body(self, node):
         if self.current_field_name == 'date':
             value = get_date(node.astext())
+        elif self.current_field_name == 'active':
+            value = node.astext() == '1'
         else:
             value = node.astext()
         self.current_comment[self.current_field_name] = value
