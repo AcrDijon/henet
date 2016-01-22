@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
 import datetime
+import hashlib
 
 from henet.rst.parse import parse_thread
 
@@ -49,7 +50,8 @@ class Thread(object):
             uuid = str(uuid4())
         self.uuid = uuid
         self.comments = []
-        self.filename = os.path.join(self.storage_dir, self.uuid + '.rst')
+        self.filename = os.path.join(self.storage_dir,
+                                     'thread_' + self.uuid + '.rst')
         self.load()
 
     def save(self):
@@ -105,3 +107,34 @@ class Thread(object):
             lines.append(u'')
 
         return u'\n'.join(lines)
+
+
+class ArticleThread(object):
+    def __init__(self, storage_dir, article_uuid=None, thread_uuid=None):
+        self.storage_dir = storage_dir
+        if article_uuid is None:
+            article_uuid = str(uuid4())
+        self.article_uuid = article_uuid
+        self.thread_uuid = thread_uuid
+        self.thread = None
+        hashed_uuid = hashlib.md5(self.article_uuid).hexdigest()
+        self.filename = os.path.join(self.storage_dir,
+                                     'article_' + hashed_uuid + '.rst')
+        self.load()
+
+    def save(self):
+        with open(self.filename, 'w') as f:
+            f.write(self.render().encode('utf8'))
+
+    def load(self):
+        if not os.path.exists(self.filename):
+            return
+        with open(self.filename) as f:
+            uuids = f.read().split(':')
+
+        self.article_uuid = uuids[0]
+        self.thread_uuid = uuids[1]
+        self.thread = Thread(self.storage_dir, self.thread_uuid)
+
+    def render(self):
+        return u'%s:%s' % (self.article_uuid, self.thread_uuid)
