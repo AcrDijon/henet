@@ -8,7 +8,7 @@ from henet.rst.parse import parse_thread
 
 class Comment(object):
     def __init__(self, uuid=None, text='', author='Anonymous',
-                 date=None, active=True):
+                 date=None, active=True, thread=None):
         if uuid is None:
             uuid = str(uuid4())
         self.uuid = uuid
@@ -17,7 +17,14 @@ class Comment(object):
         if date is None:
             date = datetime.datetime.now()
         self.date = date
+        self.thread = thread
         self.active = active
+
+    def save(self):
+        if not self.thread:
+            raise IOError("Not linked to a thread")
+        # XXX unoptimal
+        self.thread.save()
 
     def asjson(self):
         res = {}
@@ -61,6 +68,13 @@ class Thread(object):
                                      'thread_' + self.uuid + '.rst')
         self.load()
 
+    @classmethod
+    def loadfromfile(cls, filename):
+        storage_dir = os.path.dirname(filename)
+        basename = os.path.basename(filename)
+        uuid = basename[len('thread_'):-len('.rst')]
+        return Thread(storage_dir, uuid)
+
     def save(self):
         with open(self.filename, 'w') as f:
             f.write(self.render().encode('utf8'))
@@ -71,7 +85,7 @@ class Thread(object):
         self.uuid, comments = parse_thread(self.filename)
         self.comments = []
         for comment in comments:
-            c = Comment(uuid=comment['uuid'])
+            c = Comment(uuid=comment['uuid'], thread=self)
             c.author = comment.get('author', '')
             c.date = comment.get('date', datetime.datetime.now())
             c.text = comment.get('text', '').strip()
@@ -81,7 +95,7 @@ class Thread(object):
     def add_comment(self, text, author='Anonymous', date=None,
                     active=False):
         comment = Comment(text=text, author=author, date=date,
-                          active=False)
+                          active=False, thread=self)
         self.comments.append(comment)
         return comment
 
@@ -97,9 +111,14 @@ class Thread(object):
     def delete_comment(self, cid):
         pass
 
-    def get_comments(self, include_inactive=False):
+    def get_comments(self, include_inactive=False, include_active=True):
+
+        def selected(comment):
+            return ((include_inactive and not comment.active) or
+                    (include_active and comment.active))
+
         return sorted([comment for comment in self.comments
-                       if include_inactive or comment.active],
+                       if selected(comment)],
                       key=lambda comment: -comment.date.toordinal())
 
     def render(self):
@@ -152,13 +171,29 @@ class ArticleThread(object):
 
     def load(self):
         if not os.path.exists(self.filename):
-            return
-        with open(self.filename) as f:
-            uuids = f.read().split(':')
-
-        self.article_uuid = uuids[0]
-        self.thread_uuid = uuids[1]
-        self.thread = Thread(self.storage_dir, self.thread_uuid)
+            if self.thread_uuid is not None:
+                self.thread = Thread(self.storage_dir, self.thread_uuid)
+        else:
+            with open(self.filename) as f:
+                uuids = f.read().split(':')
+            self.article_uuid = uuids[0]
+            self.thread_uuid = uuids[1]
+            self.thread = Thread(self.storage_dir, self.thread_uuid)
 
     def render(self):
         return u'%s:%s' % (self.article_uuid, self.thread_uuid)
+
+
+class CommentsDB(object):
+    def __init__(self, storage_dir):
+        self.storage_dir = storage_dir
+
+    def get_moderation_queue(self):
+        for file in os.listdir(self.storage_dir):
+            if not file.startswith('thread_'):
+                continue
+            filename = os.path.join(self.storage_dir, file)
+            thread = Thread.loadfromfile(filename)
+            for comment in thread.get_comments(include_inactive=True,
+                                               include_active=False):
+                yield comment

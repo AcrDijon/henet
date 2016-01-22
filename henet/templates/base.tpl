@@ -48,6 +48,11 @@
                 <li><a href="/category/{{ cat_ }}">{{ data['title'] }}</a></li>
                 % end
             % end
+            % if category != 'comments':
+              <li><a href="/comments"><strong>Modération</strong></a></li>
+            % else:
+              <li class="active"><a href="/comments"><strong>Modération</strong></a></li>
+            % end
           </ul>
         </div><!--/.nav-collapse -->
       </div>

@@ -4,7 +4,7 @@ import tempfile
 import shutil
 import datetime
 
-from henet.comments import Thread, ArticleThread
+from henet.comments import Thread, ArticleThread, CommentsDB
 
 
 class TestThread(unittest.TestCase):
@@ -84,3 +84,15 @@ class TestThread(unittest.TestCase):
 
         # most recent first
         self.assertEqual(comment.text, u"Ouai **ouai3**")
+
+        # let's check the moderation queue
+        comments = CommentsDB(tempdir)
+
+        for comment in comments.get_moderation_queue():
+            comment.active = True
+            comment.save()    # should automate this
+
+        # we have 3 active comments now
+        thread.load()
+        comments = thread.get_comments()
+        self.assertEqual(len(comments), 3)
