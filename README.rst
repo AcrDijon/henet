@@ -110,7 +110,7 @@ and the form to add comments. Example::
 Credits
 -------
 
-Henet is under MIT and uses some code from:
+Henet is under APLv2 and uses some code from:
 
 - rsted
 - XXX list all pieces of code I used here and there
