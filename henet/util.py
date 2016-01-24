@@ -1,6 +1,7 @@
 import smtplib
 import email.utils
 from email.mime.text import MIMEText
+from email.header import Header
 import os
 import hashlib
 import bson
@@ -8,6 +9,7 @@ import datetime
 
 from henet.rst.parse import parse_article as parse
 from henet.article import Article
+from henet import logger
 
 
 def by_date(article1, article2):
@@ -67,10 +69,10 @@ def parse_articles(path, cache_dir, page=-1, page_size=20):
 
 
 def send_email(tos, subject, body, smtp_config):
-    msg = MIMEText(body)
+    msg = MIMEText(body.encode('utf8'), 'plain', 'utf-8')
     msg['To'] = email.utils.formataddr(('Recipient', ','.join(tos)))
     msg['From'] = email.utils.formataddr(('Author', smtp_config['from']))
-    msg['Subject'] = subject
+    msg['Subject'] = Header(subject, 'utf8')
 
     server = smtplib.SMTP(smtp_config['host'], smtp_config.get('port', 25))
     try:
@@ -83,5 +85,8 @@ def send_email(tos, subject, body, smtp_config):
         if username is not None:
             server.login(username, smtp_config['password'])
         server.sendmail(smtp_config['from'], tos, msg.as_string())
+        logger.debug("Mail sent")
+    except Exception as e:
+        logger.exception("Could not send the email")
     finally:
         server.quit()

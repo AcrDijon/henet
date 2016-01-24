@@ -3,6 +3,7 @@ import signal
 import sys
 import os
 from functools import partial
+from logging.config import fileConfig
 
 import bottle
 from bottle import route, run, view, app as app_stack
@@ -12,6 +13,8 @@ import konfig
 from henet.events import subscribe, ALL_EVENTS, event2str
 from henet.pool import initialize_pool, close_pool, apply_async
 from henet.util import send_email
+from henet import logger
+import multiprocessing_logging
 
 
 HERE = os.path.dirname(__file__)
@@ -48,10 +51,14 @@ def get_alerts():
 
 def main():
     if len(sys.argv) > 1:
-        config = konfig.Config(sys.argv[1])
+        config_file = sys.argv[1]
     else:
-        config = konfig.Config(DEFAULT_CONFIG)
+        config_file = DEFAULT_CONFIG
 
+    fileConfig(config_file)
+    multiprocessing_logging.install_mp_handler()
+
+    config = konfig.Config(config_file)
     bottle.debug(config['henet'].get('debug', DEFAULT_DEBUG))
 
     app = bottle.app()
@@ -85,7 +92,8 @@ def main():
     initialize_pool()
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
-        port=config['henet'].get('port', DEFAULT_PORT))
+        port=config['henet'].get('port', DEFAULT_PORT),
+        server='waitress')
 
 
 if __name__ == '__main__':
