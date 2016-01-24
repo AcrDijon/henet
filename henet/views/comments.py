@@ -1,3 +1,4 @@
+# encoding: utf8
 import datetime
 from bottle import route, request, app, response, get
 from henet.comments import ArticleThread, CommentsDB
@@ -18,6 +19,11 @@ def enable_cors(func):
     return _enable_cors
 
 
+MODERATE_BODY = u"""\
+Nouveau commentaire à modérer
+"""
+
+
 # XXX needs rate limiting
 @route("/comments", method=['OPTIONS', 'POST'])
 @enable_cors
@@ -25,13 +31,19 @@ def new_comment():
     data = request.json
     comments_dir = app._config['henet']['comments_dir']
 
-    article_thread = ArticleThread(comments_dir, data['article_url'])
+    article_url = data['article_url']
+    article_thread = ArticleThread(comments_dir, article_url)
     article_thread.add_comment(text=data['text'],
                                author=data['author'])
 
-    # XXX trigger mail for moderation
     article_thread.save()
-    emit(EVENT_CREATED_COMMENT, article_path=article_path)
+    notifs = app._config['notifications']
+    moderator = notifs.get('moderate_comment')
+    if moderator is not None:
+        app.send_email([moderator], u'Nouveau commentaire',
+                       MODERATE_BODY)
+
+    emit(EVENT_CREATED_COMMENT, article_url=article_url)
     return {'result': 'OK'}
 
 

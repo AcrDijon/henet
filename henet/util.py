@@ -1,3 +1,6 @@
+import smtplib
+import email.utils
+from email.mime.text import MIMEText
 import os
 import hashlib
 import bson
@@ -61,3 +64,24 @@ def parse_articles(path, cache_dir, page=-1, page_size=20):
         return articles[start:end], total_pages
 
     return articles, total_pages
+
+
+def send_email(tos, subject, body, smtp_config):
+    msg = MIMEText(body)
+    msg['To'] = email.utils.formataddr(('Recipient', ','.join(tos)))
+    msg['From'] = email.utils.formataddr(('Author', smtp_config['from']))
+    msg['Subject'] = subject
+
+    server = smtplib.SMTP(smtp_config['host'], smtp_config.get('port', 25))
+    try:
+        server.ehlo()
+        if server.has_extn('STARTTLS'):
+            server.starttls()
+            server.ehlo()
+
+        username = smtp_config.get('username')
+        if username is not None:
+            server.login(username, smtp_config['password'])
+        server.sendmail(smtp_config['from'], tos, msg.as_string())
+    finally:
+        server.quit()

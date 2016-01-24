@@ -1,4 +1,5 @@
 # encoding: utf-8
+import signal
 import sys
 import os
 from functools import partial
@@ -9,6 +10,8 @@ from bottle import static_file
 import konfig
 
 from henet.events import subscribe, ALL_EVENTS, event2str
+from henet.pool import initialize_pool, close_pool, apply_async
+from henet.util import send_email
 
 
 HERE = os.path.dirname(__file__)
@@ -63,11 +66,23 @@ def main():
     app_stack.vars = app.vars = {'categories': cats, 'get_alerts': get_alerts}
     app_stack.view = partial(view, **app.vars)
     app_stack._config = app._config = config
+    smtp_config = dict(config.items('smtp'))
+
+    def _send_email(*args):
+        args = list(args) + [smtp_config]
+        apply_async(send_email, args)
+
+    app_stack.send_email = app.send_email = _send_email
 
     from henet import views  # NOQA
 
-    subscribe(ALL_EVENTS, add_alert)
+    def _close_pool(*args):
+        close_pool()
+        sys.exit(0)
 
+    subscribe(ALL_EVENTS, add_alert)
+    signal.signal(signal.SIGINT, _close_pool)
+    initialize_pool()
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
         port=config['henet'].get('port', DEFAULT_PORT))
