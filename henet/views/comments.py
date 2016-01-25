@@ -1,6 +1,6 @@
 # encoding: utf8
 import datetime
-from bottle import route, request, app, response, get
+from bottle import route, request, app, response, get, post, redirect
 from henet.comments import ArticleThread, CommentsDB
 from henet.events import emit, EVENT_CREATED_COMMENT
 
@@ -30,9 +30,8 @@ Nouveau commentaire à modérer
 def new_comment():
     data = request.json
     comments_dir = app._config['henet']['comments_dir']
-
-    article_url = data['article_url']
-    article_thread = ArticleThread(comments_dir, article_url)
+    article_uuid = data['source_path']
+    article_thread = ArticleThread(comments_dir, article_uuid)
     article_thread.add_comment(text=data['text'],
                                author=data['author'])
 
@@ -43,8 +42,24 @@ def new_comment():
         app.send_email([moderator], u'Nouveau commentaire',
                        MODERATE_BODY)
 
-    emit(EVENT_CREATED_COMMENT, article_url=article_url)
+    emit(EVENT_CREATED_COMMENT, article_uuid=article_uuid)
     return {'result': 'OK'}
+
+
+@post("/comments/<comment_id>/activate")
+def activate_comment(comment_id):
+    comments_dir = app._config['henet']['comments_dir']
+    database = CommentsDB(comments_dir)
+    database.activate_comment(comment_id)
+    redirect('/comments')
+
+
+@post("/comments/<comment_id>/reject")
+def reject_comment(comment_id):
+    comments_dir = app._config['henet']['comments_dir']
+    database = CommentsDB(comments_dir)
+    database.reject_comment(comment_id)
+    redirect('/comments')
 
 
 @get("/comments")

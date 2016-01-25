@@ -16,19 +16,20 @@ $(document).ready(function () {
       };
 });
 
-function post_comment(server, form_id) {
+function post_comment(form_id, server) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/comments",
-        data: JSON.stringify($('#henet_comment').serializeFormJSON()),
+        url: server + "/comments",
+        data: JSON.stringify($(form_id).serializeFormJSON()),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-            alert(data);
+            alert("Commentaire soumis à modération.");
+            $(form_id).find("input[type=text], textarea").val("");
         },
         failure: function(err) {
-            alert(err);
+            alert("Le commentaire n'a pas pu être soumis.");
         }
       });
       return false;

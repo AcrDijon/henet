@@ -19,6 +19,11 @@ class Comment(object):
         self.date = date
         self.thread = thread
         self.active = active
+        self.articles = []
+
+    def link_to_article(self, uuid):
+        if uuid not in self.articles:
+            self.articles.append(uuid)
 
     def save(self):
         if not self.thread:
@@ -33,6 +38,7 @@ class Comment(object):
         res['author'] = self.author
         res['date'] = self.date
         res['active'] = self.active
+        res['articles'] = self.articles
         return res
 
     def render(self):
@@ -66,7 +72,12 @@ class Thread(object):
         self.comments = []
         self.filename = os.path.join(self.storage_dir,
                                      'thread_' + self.uuid + '.rst')
+        self.articles = []
         self.load()
+
+    def link_to_article(self, uuid):
+        if uuid not in self.articles:
+            self.articles.append(uuid)
 
     @classmethod
     def loadfromfile(cls, filename):
@@ -90,6 +101,7 @@ class Thread(object):
             c.date = comment.get('date', datetime.datetime.now())
             c.text = comment.get('text', '').strip()
             c.active = comment.get('active', False)
+            c.articles = self.articles
             self.comments.append(c)
 
     def add_comment(self, text, author='Anonymous', date=None,
@@ -105,11 +117,15 @@ class Thread(object):
                 comment.active = True
                 break
 
-    def modify_comment(self, cid, **fields):
-        pass
+    def reject_comment(self, cid):
+        self.comments = [comment for comment in self.comments
+                         if comment.uuid != cid]
 
-    def delete_comment(self, cid):
-        pass
+    def get_comment(self, uuid):
+        for comment in self.comments:
+            if comment.uuid == uuid:
+                return comment
+        raise KeyError(uuid)
 
     def get_comments(self, include_inactive=False, include_active=True):
 
@@ -171,8 +187,8 @@ class ArticleThread(object):
 
     def load(self):
         if not os.path.exists(self.filename):
-            if self.thread_uuid is not None:
-                self.thread = Thread(self.storage_dir, self.thread_uuid)
+            self.thread = Thread(self.storage_dir, self.thread_uuid)
+            self.thread_uuid = self.thread.uuid
         else:
             with open(self.filename) as f:
                 uuids = f.read().split(':')
@@ -180,20 +196,65 @@ class ArticleThread(object):
             self.thread_uuid = uuids[1]
             self.thread = Thread(self.storage_dir, self.thread_uuid)
 
+        if self.thread is not None:
+            self.thread.link_to_article(self.article_uuid)
+
     def render(self):
         return u'%s:%s' % (self.article_uuid, self.thread_uuid)
+
+    @classmethod
+    def loadfromfile(cls, filename):
+        storage_dir = os.path.dirname(filename)
+        cls = ArticleThread(storage_dir)
+        cls.filename = filename
+        cls.load()
+        return cls
 
 
 class CommentsDB(object):
     def __init__(self, storage_dir):
         self.storage_dir = storage_dir
 
-    def get_moderation_queue(self):
+    def _get_comment(self, uuid):
+        thread = comment = None
         for file in os.listdir(self.storage_dir):
             if not file.startswith('thread_'):
                 continue
             filename = os.path.join(self.storage_dir, file)
             thread = Thread.loadfromfile(filename)
+            try:
+                comment = thread.get_comment(uuid)
+                break
+            except KeyError:
+                pass
+        if comment is None:
+            thread = None
+        return thread, comment
+
+    def activate_comment(self, uuid):
+        thread, comment = self._get_comment(uuid)
+        if thread is not None:
+            thread.activate_comment(comment.uuid)
+            thread.save()
+
+    def reject_comment(self, uuid):
+        thread, comment = self._get_comment(uuid)
+        if thread is not None:
+            thread.reject_comment(comment.uuid)
+            thread.save()
+
+    def get_moderation_queue(self):
+        comments = []
+
+        for file in os.listdir(self.storage_dir):
+            if not file.startswith('article_'):
+                continue
+            filename = os.path.join(self.storage_dir, file)
+            article_thread = ArticleThread.loadfromfile(filename)
+            thread = article_thread.thread
             for comment in thread.get_comments(include_inactive=True,
                                                include_active=False):
+                if comment in comments:
+                    continue
+                comments.append(comment)
                 yield comment

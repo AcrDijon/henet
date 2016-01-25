@@ -23,7 +23,7 @@
    </a>
   </td>
  <td>
-  Titre+lien article
+  {{comment.articles[0]}}
  </td>
  <td>
   <form action="/comments/{{ comment.uuid }}/activate"
