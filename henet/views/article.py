@@ -54,7 +54,7 @@ def post_article(category, article):
         f.write(article.render().encode('utf8'))
 
     emit(EVENT_CHANGED_CONTENT, article_path=article_path)
-    redirect('/category/%s%s' % (category, article['filename']))
+    redirect('/category/%s/%s' % (category, article['filename']))
 
 
 DEFAULT_BODY = u"""

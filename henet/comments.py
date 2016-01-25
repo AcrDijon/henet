@@ -243,7 +243,8 @@ class CommentsDB(object):
             thread.reject_comment(comment.uuid)
             thread.save()
 
-    def get_moderation_queue(self):
+    def _get_comments(self, inactive=True, active=False,
+                      article_uuid=None):
         comments = []
 
         for file in os.listdir(self.storage_dir):
@@ -252,9 +253,21 @@ class CommentsDB(object):
             filename = os.path.join(self.storage_dir, file)
             article_thread = ArticleThread.loadfromfile(filename)
             thread = article_thread.thread
-            for comment in thread.get_comments(include_inactive=True,
-                                               include_active=False):
+
+            if (article_uuid is not None and
+                article_thread.article_uuid != article_uuid):
+                continue
+
+            for comment in thread.get_comments(include_inactive=inactive,
+                                               include_active=active):
                 if comment in comments:
                     continue
                 comments.append(comment)
                 yield comment
+
+    def get_moderation_queue(self):
+        return self._get_comments()
+
+    def get_comments(self, article_uuid=None):
+        return self._get_comments(inactive=False, active=True,
+                                  article_uuid=article_uuid)

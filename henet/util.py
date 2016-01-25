@@ -38,7 +38,7 @@ def parse_article(path, cache_dir, root_path):
             article = Article(bson.loads(f.read()))
     else:
         article = parse(path)
-        article['filename'] = path[len(root_path):]
+        article['filename'] = path[len(root_path):].lstrip('/')
         with open(cache, 'w') as f:
             f.write(bson.dumps(article))
 
