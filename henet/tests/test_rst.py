@@ -35,6 +35,6 @@ class TestParse(unittest.TestCase):
                 lev_ = distance(source, rendered)
                 jaro_ = jaro(source, rendered)
 
-                if lev_ > 10 and jaro_ < 0.85 and file not in MUTATED_FILES:
+                if lev_ > 10 and jaro_ < 0.8 and file not in MUTATED_FILES:
                     print('%d %f %s' % (lev_, jaro_, filename))
                     raise AssertionError(filename)

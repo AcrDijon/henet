@@ -1,0 +1,3 @@
+[run]
+omit =
+	henet/rst/patch.py
