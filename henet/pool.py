@@ -43,10 +43,9 @@ def close_pool():
 def _run(func, *args):
     try:
         result = func(*args)
-    except Exception as e:
+    except Exception:
         return False, traceback.format_exc()
     return True, result
-
 
 
 def apply_async(func, args):

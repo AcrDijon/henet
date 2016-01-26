@@ -1,3 +1,50 @@
+# encoding: utf8
+"""
+Comments Database.
+
+A comment is described with the following fields:
+
+- uuid: a unique id.
+- author: the author of the comment
+- text: the comment
+- date: the date
+- active: a flag indicating if the comment is active
+
+We've made the design decision not to store the e-mail
+or the website of the author in each comment to make
+sure that a website that manages users will be able
+to store user related information separately and update
+them without having to migrate all comment. The author
+field can be used as a unique user identifier.
+
+A thread is a collection of comments with its own uuid.
+Last, an article has an uuid and can point to a thread.
+
+The data is organized in a directory with two type of files:
+
+- article_<huuid>.rst
+- thread_<huuid>.rst
+
+Where *huuid* is the md5 hash of the uuid.
+
+The thread files contain its list of comment. It follows
+the reStructuredText format and each comment is separated
+with a transition marker.
+
+The article file is a one-liner with just two fields:
+the article uuid and the thread uuid.
+
+Threads uuid can be auto-generated using uuid4() but articles
+uuid should be a value uniquely identifying an article.
+
+In Pelican, the path relative to the root content directory
+is a good candidate because it allows Henet to store comments
+related to an article no matter what the article URL is or
+no matter what is the absolute path of the Pelican on disk.
+
+Another important design decision is that a thread can be used
+in several articles.
+"""
 import os
 from uuid import uuid4
 import datetime
@@ -19,6 +66,7 @@ class Comment(object):
         self.date = date
         self.thread = thread
         self.active = active
+        # backrefs to articles
         self.articles = []
 
     def link_to_article(self, uuid):
@@ -70,8 +118,10 @@ class Thread(object):
             uuid = str(uuid4())
         self.uuid = uuid
         self.comments = []
+        hashed_uuid = hashlib.md5(self.uuid).hexdigest()
         self.filename = os.path.join(self.storage_dir,
-                                     'thread_' + self.uuid + '.rst')
+                                     'thread_' + hashed_uuid + '.rst')
+        # backrefs to articles
         self.articles = []
         self.load()
 
@@ -82,9 +132,10 @@ class Thread(object):
     @classmethod
     def loadfromfile(cls, filename):
         storage_dir = os.path.dirname(filename)
-        basename = os.path.basename(filename)
-        uuid = basename[len('thread_'):-len('.rst')]
-        return Thread(storage_dir, uuid)
+        klass = Thread(storage_dir)
+        klass.filename = filename
+        klass.load()
+        return klass
 
     def save(self):
         with open(self.filename, 'w') as f:
@@ -205,10 +256,10 @@ class ArticleThread(object):
     @classmethod
     def loadfromfile(cls, filename):
         storage_dir = os.path.dirname(filename)
-        cls = ArticleThread(storage_dir)
-        cls.filename = filename
-        cls.load()
-        return cls
+        klass = ArticleThread(storage_dir)
+        klass.filename = filename
+        klass.load()
+        return klass
 
 
 class CommentsDB(object):
@@ -255,7 +306,7 @@ class CommentsDB(object):
             thread = article_thread.thread
 
             if (article_uuid is not None and
-                article_thread.article_uuid != article_uuid):
+                    article_thread.article_uuid != article_uuid):
                 continue
 
             for comment in thread.get_comments(include_inactive=inactive,

@@ -17,7 +17,7 @@
 <tr>
  <td>{{ article['metadata'].get('date', now).strftime('%d/%m/%Y') }}</td>
  <td>
-  <a href="/category/{{ category }}{{article['filename']}}">
+  <a href="/category/{{ category }}/{{article['filename']}}">
     {{ article['title'] }}
   </a>
  </td>
@@ -26,7 +26,7 @@
   {{article['comments_count']}}
  </td>
  <td>
-  <form action="/delete/category/{{ category }}{{article['filename']}}"
+  <form action="/delete/category/{{ category }}/{{article['filename']}}"
         method="POST" onsubmit="return confirm('Confirmez-vous la suppression?');">
     <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-trash"></span>

@@ -86,7 +86,7 @@ def send_email(tos, subject, body, smtp_config):
             server.login(username, smtp_config['password'])
         server.sendmail(smtp_config['from'], tos, msg.as_string())
         logger.debug("Mail sent")
-    except Exception as e:
+    except Exception:
         logger.exception("Could not send the email")
     finally:
         server.quit()

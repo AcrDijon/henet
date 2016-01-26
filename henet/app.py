@@ -89,6 +89,8 @@ def main():
 
     subscribe(ALL_EVENTS, add_alert)
     signal.signal(signal.SIGINT, _close_pool)
+
+    logger.debug('Starting pool for background tasks')
     initialize_pool()
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
