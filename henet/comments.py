@@ -10,11 +10,11 @@ A comment is described with the following fields:
 - date: the date
 - active: a flag indicating if the comment is active
 
-We've made the design decision not to store the e-mail
+I've made the design decision not to store the e-mail
 or the website of the author in each comment to make
 sure that a website that manages users will be able
-to store user related information separately and update
-them without having to migrate all comment. The author
+to store user-related information separately and update
+them without having to migrate all comments. The author
 field can be used as a unique user identifier.
 
 A thread is a collection of comments with its own uuid.
@@ -74,9 +74,9 @@ class Comment(object):
             self.articles.append(uuid)
 
     def save(self):
-        if not self.thread:
-            raise IOError("Not linked to a thread")
-        # XXX unoptimal
+        if self.thread is None:
+            return
+        # XXX suboptimal
         self.thread.save()
 
     def asjson(self):
@@ -91,7 +91,7 @@ class Comment(object):
 
     def render(self):
         def _date2str(date):
-            return date.strftime('%Y-%m-%d %H:%M')
+            return date.strftime('%Y-%m-%d %H:%M:%S')
 
         def _bool2str(value):
             if value:
@@ -128,6 +128,8 @@ class Thread(object):
     def link_to_article(self, uuid):
         if uuid not in self.articles:
             self.articles.append(uuid)
+        for comment in self.comments:
+            comment.link_to_article(uuid)
 
     @classmethod
     def loadfromfile(cls, filename):
@@ -158,7 +160,9 @@ class Thread(object):
     def add_comment(self, text, author='Anonymous', date=None,
                     active=False):
         comment = Comment(text=text, author=author, date=date,
-                          active=False, thread=self)
+                          active=active, thread=self)
+        for article in self.articles:
+            comment.link_to_article(article)
         self.comments.append(comment)
         return comment
 
@@ -186,10 +190,14 @@ class Thread(object):
 
         return sorted([comment for comment in self.comments
                        if selected(comment)],
-                      key=lambda comment: -comment.date.toordinal())
+                      key=lambda comment: comment.date, reverse=True)
 
     def render(self):
-        lines = [u':uuid: %s' % self.uuid, u'', u'----', u'']
+        lines = [u':uuid: %s' % self.uuid, u'']
+        if len(self.comments) == 0:
+            return u'\n'.join(lines)
+
+        lines.extend([u'----', u''])
         for i, comment in enumerate(self.comments):
             lines.append(comment.render())
             if i == len(self.comments) - 1:
@@ -215,17 +223,11 @@ class ArticleThread(object):
         self.load()
 
     def add_comment(self, *args, **kw):
-        if self.thread is None:
-            self.thread = Thread(self.storage_dir)
-            self.save()
         return self.thread.add_comment(*args, **kw)
 
     def asjson(self):
-        if self.thread is None:
-            comments = []
-        else:
-            comments = [comment.asjson() for comment in
-                        self.thread.get_comments()]
+        comments = [comment.asjson() for comment in
+                    self.thread.get_comments()]
 
         return {'article_uuid': self.article_uuid,
                 'thread_uuid': self.thread_uuid,
@@ -247,8 +249,7 @@ class ArticleThread(object):
             self.thread_uuid = uuids[1]
             self.thread = Thread(self.storage_dir, self.thread_uuid)
 
-        if self.thread is not None:
-            self.thread.link_to_article(self.article_uuid)
+        self.thread.link_to_article(self.article_uuid)
 
     def render(self):
         return u'%s:%s' % (self.article_uuid, self.thread_uuid)
@@ -296,8 +297,6 @@ class CommentsDB(object):
 
     def _get_comments(self, inactive=True, active=False,
                       article_uuid=None):
-        comments = []
-
         for file in os.listdir(self.storage_dir):
             if not file.startswith('article_'):
                 continue
@@ -311,9 +310,6 @@ class CommentsDB(object):
 
             for comment in thread.get_comments(include_inactive=inactive,
                                                include_active=active):
-                if comment in comments:
-                    continue
-                comments.append(comment)
                 yield comment
 
     def get_moderation_queue(self):

@@ -18,7 +18,7 @@
  <td>{{ comment.date.strftime('%d/%m/%Y') }}</td>
  <td>{{ comment.author }}</td>
  <td>
-   <a href="#" data-toggle="tooltip" title="Commentaire complet: {{ comment.text }}">
+   <a href="#" data-toggle="tooltip" title="{{ comment.html }}">
      {{ comment.summary }}
    </a>
   </td>

@@ -51,16 +51,16 @@
   {% if article.metadata.comments and article.metadata.comments['comments']|length != 0 %}
     <h4>{{article.metadata.comments['comments']|length}} Commentaires</h4>
  {% else %}
-   <h4>Aucun commentaire pour l'instant</h4> 
+   <h4>Aucun commentaire pour l'instant</h4>
  {% endif %}
 
  <form id="henet_comment" action="">
-  <input type="hidden" name="source_path" 
+  <input type="hidden" name="source_path"
          value="{{article.get_relative_source_path()}}">
   <textarea name="text" placeholder="Insérez votre commentaire ici (au moins 3 lettres)"></textarea>
   <section class="auth-section">
      <input name="author" placeholder="Nom" value="" type="text">
-     <button type="button" 
+     <button type="button"
       onclick="post_comment('#henet_comment', '{{HENET_SERVER}}')">Soumettre</button>
   </section>
  </form>
@@ -69,7 +69,7 @@
       <div class="henet_comment">
           <span class="author">{{ comment['author'] }}</span>
           <span class="date">{{ comment['date'] }}</span>
-          <div>{{ comment['text'] }}</div>
+          <div>{{ comment['html'] }}</div>
       </div>
       {% endfor %}
  {% endif %}

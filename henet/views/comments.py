@@ -1,8 +1,10 @@
 # encoding: utf8
 import datetime
 from bottle import route, request, app, response, get, post, redirect
+
 from henet.comments import ArticleThread, CommentsDB
 from henet.events import emit, EVENT_CREATED_COMMENT
+from henet.rst.rst2html import rst2html
 
 
 def enable_cors(func):
@@ -70,6 +72,8 @@ def get_comment():
             comment.summary = comment.text[:20] + '...'
         else:
             comment.summary = comment.text
+
+        comment.html = rst2html(comment.text, theme='acr', body_only=True)
         return comment
 
     comments_dir = app._config['henet']['comments_dir']

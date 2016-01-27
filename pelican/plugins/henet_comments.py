@@ -2,7 +2,6 @@
 import traceback
 
 from pelican import signals
-from bs4 import BeautifulSoup
 
 from henet.comments import ArticleThread
 from henet.rst.rst2html import rst2html
@@ -23,12 +22,8 @@ def add_comments(generator, content):
         thread = thread.asjson()
 
         for comment in thread['comments']:
-            # XXX we should create a custom docutils writer to write just the
-            # body instead of extracting it from rst2html
-            html_doc = rst2html(comment['text'], theme='acr')
-            soup = BeautifulSoup(html_doc, 'html.parser')
-            comment_text = soup.body.find('div', {'class':'body'}).contents
-            comment['text'] = ''.join([str(tag) for tag in comment_text])
+            html = rst2html(comment['text'], theme='acr', body_only=True)
+            comment['html'] = html
 
         content.metadata["comments"] = thread
     except:

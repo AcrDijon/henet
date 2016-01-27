@@ -6,7 +6,8 @@ install_requires = ['bottle', 'python-dateutil', 'beaker',
                     'konfig', 'docutils', 'rst2rst',
                     'python-Levenshtein', 'pelican',
                     'konfig', 'bson', 'waitress',
-                    'multiprocessing-logging']
+                    'multiprocessing-logging',
+                    'beautifulsoup4']
 
 
 try:
