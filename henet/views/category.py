@@ -37,4 +37,5 @@ def category(name):
 
     return {"category": name, 'articles': articles,
             "data": data, "total_pages": total_pages,
+            "can_create": data['can_create'],
             "current_page": page, "now": datetime.datetime.now()}

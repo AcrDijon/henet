@@ -8,6 +8,8 @@ EVENT_CHANGED_CONTENT = 0
 EVENT_DELETED_CONTENT = 1
 EVENT_CREATED_CONTENT = 2
 EVENT_CREATED_COMMENT = 3
+EVENT_BUILD = 4
+EVENT_ALREADY_BUILDING = 5
 
 
 def event2str(event):
@@ -17,6 +19,10 @@ def event2str(event):
         return 'Contenu supprimé'
     elif event == EVENT_CREATED_CONTENT:
         return 'Contenu créé'
+    elif event == EVENT_BUILD:
+        return 'Mise à jour lancée'
+    elif event == EVENT_ALREADY_BUILDING:
+        return 'Mise à jour déjà en cours'
     return ''
 
 

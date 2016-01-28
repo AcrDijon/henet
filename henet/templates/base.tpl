@@ -1,5 +1,6 @@
 % setdefault('page_title', "Henet Admin")
 % setdefault('category', None)
+% setdefault('page', None)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +49,16 @@
                 <li><a href="/category/{{ cat_ }}">{{ data['title'] }}</a></li>
                 % end
             % end
+
+            % for page_, data  in pages:
+                % if page_ == page:
+                <li class="active"><a href="/page/{{ page_ }}">
+                        {{ data['title'] }}</a></li>
+                % else:
+                <li><a href="/page/{{ page_ }}">{{ data['title'] }}</a></li>
+                % end
+            % end
+
             % if category != 'comments':
               <li><a href="/comments"><em><strong>Modération</strong></em></a></li>
             % else:

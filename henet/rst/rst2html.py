@@ -38,7 +38,7 @@ def rst2html(rst, theme=None, opts=None, body_only=False):
     # body instead of extracting it from publish_string
     if body_only:
         soup = BeautifulSoup(out, 'html.parser')
-        body = soup.body.find('div', {'class':'body'}).contents
+        body = soup.body.find('div', {'class': 'body'}).contents
         out = ''.join([str(tag) for tag in body])
 
     return out

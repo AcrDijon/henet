@@ -9,12 +9,11 @@ import bottle
 from bottle import route, run, view, app as app_stack
 from bottle import static_file
 import konfig
+import multiprocessing_logging
 
 from henet.events import subscribe, ALL_EVENTS, event2str
-from henet.pool import initialize_pool, close_pool, apply_async
+from henet.pool import MemoryWorkers
 from henet.util import send_email
-from henet import logger
-import multiprocessing_logging
 
 
 HERE = os.path.dirname(__file__)
@@ -63,35 +62,56 @@ def main():
 
     app = bottle.app()
     cats = []
-    for cat in config['henet']['categories']:
+
+    config_cats = config['henet']['categories']
+    if not isinstance(config_cats, list):
+        config_cats = [config_cats]
+
+    for cat in config_cats:
         values = dict(config[cat].items())
         # defaults
         if 'can_create' not in values:
             values['can_create'] = True
         cats.append((cat, values))
 
-    app_stack.vars = app.vars = {'categories': cats, 'get_alerts': get_alerts}
+    pages = []
+
+    config_pages = config['henet']['pages']
+    if not isinstance(config_pages, list):
+        config_pages = [config_pages]
+
+    for page in config_pages:
+        values = dict(config[page].items())
+        # defaults
+        if 'can_create' not in values:
+            values['can_create'] = True
+        pages.append((page, values))
+
+    app_stack.vars = app.vars = {'pages': pages,
+                                 'categories': cats,
+                                 'get_alerts': get_alerts,
+                                 'site_url': config['henet']['site_url']}
+
     app_stack.view = partial(view, **app.vars)
     app_stack._config = app._config = config
+    app_stack.workers = app.workers = MemoryWorkers()
+
     smtp_config = dict(config.items('smtp'))
 
     def _send_email(*args):
         args = list(args) + [smtp_config]
-        apply_async(send_email, args)
+        app.workers.apply_async('send-email', send_email, args)
 
     app_stack.send_email = app.send_email = _send_email
 
     from henet import views  # NOQA
 
     def _close_pool(*args):
-        close_pool()
+        app.workers.close()
         sys.exit(0)
 
     subscribe(ALL_EVENTS, add_alert)
     signal.signal(signal.SIGINT, _close_pool)
-
-    logger.debug('Starting pool for background tasks')
-    initialize_pool()
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
         port=config['henet'].get('port', DEFAULT_PORT),

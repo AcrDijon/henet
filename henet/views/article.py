@@ -20,6 +20,27 @@ def del_article(category, article):
     redirect('/category/%s' % category)
 
 
+@post("/delete/page/<page>/<article:path>")
+def del_page(page, article):
+    page_path = dict(app.vars['pages'])[page]['path']
+    article_path = os.path.join(page_path, article)
+    os.remove(article_path)
+    emit(EVENT_DELETED_CONTENT, article_path=article_path)
+    redirect('/page/%s' % page)
+
+
+@route("/page/<page>/<article:path>")
+@app.view("page")
+def get_page(page, article):
+    cache_dir = app._config['henet']['cache_dir']
+    page_path = dict(app.vars['pages'])[page]['path']
+    article_path = os.path.join(page_path, article)
+    article = parse_article(article_path, cache_dir, page_path)
+    return {'article': article, 'page': page,
+            'now': datetime.datetime.now(),
+            'filename': os.path.split(article_path)[-1]}
+
+
 @route("/category/<category>/<article:path>")
 @app.view("article")
 def get_article(category, article):
@@ -30,6 +51,29 @@ def get_article(category, article):
     return {'article': article, 'category': category,
             'now': datetime.datetime.now(),
             'filename': os.path.split(article_path)[-1]}
+
+
+@post("/page/<page>/<article:path>")
+def post_page(page, article):
+    data = dict(request.POST.decode())
+    cache_dir = app._config['henet']['cache_dir']
+    page_path = dict(app.vars['pages'])[page]['path']
+    article_path = os.path.join(page_path, article)
+    article = parse_article(article_path, cache_dir, page_path)
+
+    # XXX all this update crap should be in a Document() class
+    if 'title' in data:
+        article['title'] = data['title']
+    if 'body' in data:
+        article['body'] = data['body']
+    if 'date' in data:
+        article.set_metadata('date', data['date'])
+
+    with open(article_path, 'w') as f:
+        f.write(article.render().encode('utf8'))
+
+    emit(EVENT_CHANGED_CONTENT, article_path=article_path)
+    redirect('/page/%s/%s' % (page, article['filename']))
 
 
 @post("/category/<category>/<article:path>")
@@ -80,7 +124,7 @@ Une image:
 
 
 @post("/create")
-def create_article():
+def create_article_or_page():
     data = dict(request.POST.decode())
     article = Article()
 
@@ -91,19 +135,28 @@ def create_article():
     article.set_metadata('date', date)
 
     category = u'resultats'
+    page = None
 
     for key, val in data.items():
-        if key.startswith(u'add_'):
-            category = key[len(u'add_'):]
+        if key.startswith(u'cat_add_'):
+            category = key[len(u'cat_add_'):]
+            break
+        if key.startswith(u'page_add_'):
+            page = key[len(u'page_add_'):]
             break
 
-    article.set_metadata('category', category)
+    if page is None:
+        # it's an article
+        article.set_metadata('category', category)
+        path = dict(app.vars['categories'])[category]['path']
+    else:
+        # it's a page
+        path = dict(app.vars['pages'])[page]['path']
 
-    cat_path = dict(app.vars['categories'])[category]['path']
     # XXX we might want to put it under the year directory
     i = 1
     filename = slugify(article['title'])
-    fullfilename = os.path.join(cat_path, filename)
+    fullfilename = os.path.join(path, filename)
     while os.path.exists(fullfilename + '.rst'):
         fullfilename += str(i)
         i += 1
@@ -112,4 +165,7 @@ def create_article():
         f.write(article.render().encode('utf8'))
 
     emit(EVENT_CREATED_CONTENT, article_path=fullfilename)
-    redirect('/category/%s/%s' % (category, filename + '.rst'))
+    if page is None:
+        redirect('/category/%s/%s' % (category, filename + '.rst'))
+    else:
+        redirect('/page/%s/%s' % (page, filename + '.rst'))
