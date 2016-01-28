@@ -5,6 +5,8 @@ from uuid import uuid4
 from multiprocessing import Pool
 from functools import partial
 from collections import defaultdict
+import time
+
 from henet import logger
 
 
@@ -22,6 +24,9 @@ class MemoryWorkers(object):
         self._results = {}
         self._in_progress = defaultdict(list)
         self._pool = Pool(self.size, self._init_proc)
+
+    def get_result(self, res_id):
+        return self._results[res_id]
 
     def _store_result(self, name, res_id, res):
         logger.debug('Got result back for %s' % res_id)
@@ -41,11 +46,19 @@ class MemoryWorkers(object):
         self._pool.terminate()
         self._pool.join()
 
-    def apply_async(self, name, func, args):
+    def apply_async(self, name, func, args=None):
+        if args is None:
+            args = tuple()
         res_id = str(uuid4())
         self._in_progress[name].append(res_id)
         logger.debug('Running %s async - id: %s' % (func, res_id))
         callback = partial(self._store_result, name, res_id)
         cmd = partial(_run, func)
-        self._pool.apply_async(cmd, args, callback=callback)
+        res = self._pool.apply_async(cmd, args, callback=callback)
+        time.sleep(.1)
+        if res.ready() and not res.successful():
+            try:
+                res.get()
+            except Exception, e:
+                callback((False, str(e)))
         return res_id
