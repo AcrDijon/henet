@@ -12,7 +12,7 @@ import konfig
 import multiprocessing_logging
 
 from henet.events import subscribe, ALL_EVENTS, event2str
-from henet.pool import MemoryWorkers
+from henet.workers import MemoryWorkers
 from henet.util import send_email
 
 
@@ -106,12 +106,12 @@ def main():
 
     from henet import views  # NOQA
 
-    def _close_pool(*args):
+    def _close_workers(*args):
         app.workers.close()
         sys.exit(0)
 
     subscribe(ALL_EVENTS, add_alert)
-    signal.signal(signal.SIGINT, _close_pool)
+    signal.signal(signal.SIGINT, _close_workers)
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
         port=config['henet'].get('port', DEFAULT_PORT),
