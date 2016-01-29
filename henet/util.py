@@ -90,3 +90,47 @@ def send_email(tos, subject, body, smtp_config):
         logger.exception("Could not send the email")
     finally:
         server.quit()
+
+
+def hash(directory):
+    articles = []
+
+    for root, dirs, files in os.walk(directory):
+        for file_ in files:
+            if not file_.endswith('.rst'):
+                continue
+            fullpath = os.path.join(root, file_)
+            age = file_age(fullpath)
+            articles.append((fullpath, age))
+
+    articles.sort()
+    res = hashlib.md5()
+    for path, age in articles:
+        res.update('%d:' % age)
+
+    return res.hexdigest()
+
+
+def save_build_hash(directory, cache_dir):
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+    filename = os.path.join(cache_dir, md5(directory) + '.age')
+
+    new_hash = hash(directory)
+    with open(filename, 'w') as f:
+        f.write(new_hash)
+
+
+def content_changed(directory, cache_dir):
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+    filename = os.path.join(cache_dir, md5(directory) + '.age')
+
+    if os.path.exists(filename):
+        with open(filename) as f:
+            current_hash = f.read()
+    else:
+        current_hash = ''
+
+    new_hash = hash(directory)
+    return new_hash != current_hash

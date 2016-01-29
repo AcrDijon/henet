@@ -2,6 +2,13 @@
 <div class="page-header">
   <h1>Gestion du site</h1>
 </div>
+
+  % if content_changed:
+<p>
+  <strong>Le site a été modifié</strong>
+</p>
+  % end
+
 <form role="form" action="/build" method="POST"  accept-charset="utf8">
   <input type="submit" class="btn btn-lg btn-danger" value="Mettre à jour le site"></input>
 </form>

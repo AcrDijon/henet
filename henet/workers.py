@@ -28,13 +28,15 @@ class MemoryWorkers(object):
     def get_result(self, res_id):
         return self._results[res_id]
 
-    def _store_result(self, name, res_id, res):
+    def _store_result(self, name, res_id, res, callback=None):
         logger.debug('Got result back for %s' % res_id)
         self._in_progress[name].remove(res_id)
         success, result = res
         self._results[res_id] = res
         if not success:
             logger.error(result)
+        if callback is not None:
+            callback(name, res_id, success, result)
 
     def _init_proc(self):
         signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -46,19 +48,20 @@ class MemoryWorkers(object):
         self._pool.terminate()
         self._pool.join()
 
-    def apply_async(self, name, func, args=None):
+    def apply_async(self, name, func, args=None, callback=None):
         if args is None:
             args = tuple()
         res_id = str(uuid4())
         self._in_progress[name].append(res_id)
         logger.debug('Running %s async - id: %s' % (func, res_id))
-        callback = partial(self._store_result, name, res_id)
+        async_callback = partial(self._store_result, name, res_id,
+                                 callback=callback)
         cmd = partial(_run, func)
-        res = self._pool.apply_async(cmd, args, callback=callback)
+        res = self._pool.apply_async(cmd, args, callback=async_callback)
         time.sleep(.1)
         if res.ready() and not res.successful():
             try:
                 res.get()
             except Exception, e:
-                callback((False, str(e)))
+                async_callback((False, str(e)), callback=callback)
         return res_id
