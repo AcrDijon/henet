@@ -5,11 +5,11 @@
 <table class="table table-striped">
   <thead>
   <tr>
-   <th>Date</th>
-   <th>Titre</th>
-   <th>URL</th>
-   <th>Commentaires</th>
-   <th>Suppression</th>
+   <th>{{_('Date')}}</th>
+   <th>{{_('Title')}}</th>
+   <th>{{_('URL')}}</th>
+   <th>{{_('Comments')}}</th>
+   <th>{{_('Suppression')}}</th>
    </tr>
   </thead>
 <tbody>
@@ -27,7 +27,7 @@
  </td>
  <td>
   <form action="/delete/category/{{ category }}/{{article['filename']}}"
-        method="POST" onsubmit="return confirm('Confirmez-vous la suppression?');">
+        method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
     <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
@@ -50,19 +50,19 @@
 % if can_create:
 <hr/>
 <div class="page-header">
-  <h4>Ajout d'un article</h4>
+  <h4>{{_('Adding an article')}}</h4>
 </div>
 
 <form role="form" action="/create" method="POST"  accept-charset="utf8">
  <div class="form-group">
-   <label for="title">Titre de l'article:</label>
+   <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title"></input>
  </div>
 
  <p>
 
     <input id="actu" type="submit" class="btn btn-lg btn-primary"
-           name="cat_add_{{category}}" value="Ajouter"></input>
+           name="cat_add_{{category}}" value="{{_('Add')}}"></input>
  </p>
 </form>
 % end

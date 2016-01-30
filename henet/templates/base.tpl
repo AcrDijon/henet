@@ -60,9 +60,9 @@
             % end
 
             % if category != 'comments':
-              <li><a href="/comments"><em><strong>Modération</strong></em></a></li>
+              <li><a href="/comments"><em><strong>{{_('Moderate')}}</strong></em></a></li>
             % else:
-              <li class="active"><a href="/comments"><em><strong>Modération</strong></em></a></li>
+              <li class="active"><a href="/comments"><em><strong>{{_('Moderate')}}</strong></em></a></li>
             % end
           </ul>
         <div class="navbar-right">

@@ -3,3 +3,71 @@ msgstr ""
 
 msgid "Loading..."
 msgstr ""
+
+msgid "Moderate"
+msgstr ""
+
+msgid "Edition of file"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Event Date"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Comments"
+msgstr ""
+
+msgid "Suppression"
+msgstr ""
+
+msgid "Adding an article"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Adding a page"
+msgstr ""
+
+msgid "The content was modified"
+msgstr ""
+
+msgid "Update the website"
+msgstr ""
+
+msgid "Do you really want to suppress this?"
+msgstr ""
+
+msgid "Moderate comments"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Moderation"
+msgstr ""
+
+
+
+
+

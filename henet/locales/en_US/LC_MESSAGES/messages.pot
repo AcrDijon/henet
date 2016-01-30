@@ -3,3 +3,66 @@ msgstr "Website management"
 
 msgid "Loading..."
 msgstr "Loading..."
+
+msgid "Moderate"
+msgstr "Moderate"
+
+msgid "Edition of file"
+msgstr "Edition of file"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Location"
+msgstr "Location"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Event Date"
+msgstr "Event Date"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Comments"
+msgstr "Comments"
+
+msgid "Suppression"
+msgstr "Supression"
+
+msgid "Adding an article"
+msgstr "Adding an article"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Adding a page"
+msgstr "Adding a page"
+
+msgid "The content was modified"
+msgstr "The content was modified"
+
+msgid "Update the website"
+msgstr "Update the website"
+
+msgid "Do you really want to suppress this?"
+msgstr "Do you really want to suppress this?"
+
+msgid "Moderate comments"
+msgstr "Moderate comments"
+
+msgid "Author"
+msgstr "Author"
+
+msgid "Comment"
+msgstr "Comment"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Moderation"
+msgstr "Moderation"

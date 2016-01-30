@@ -3,3 +3,66 @@ msgstr "Gestion du site"
 
 msgid "Loading..."
 msgstr "Chargement..."
+
+msgid "Moderate"
+msgstr "Modération"
+
+msgid "Edition of file"
+msgstr "Edition du fichier"
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Location"
+msgstr "Lieu"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Event Date"
+msgstr "Date Evenement"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Comments"
+msgstr "Commentaires"
+
+msgid "Suppression"
+msgstr "Supression"
+
+msgid "Adding an article"
+msgstr "Ajout d'un article"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Adding a page"
+msgstr "Ajout d'une page"
+
+msgid "The content was modified"
+msgstr "Le contenu a été modifié"
+
+msgid "Update the website"
+msgstr "Mettre à jour le site"
+
+msgid "Do you really want to suppress this?"
+msgstr "Confirmer la suppression?"
+
+msgid "Moderate comments"
+msgstr "Moderation des commentaires"
+
+msgid "Author"
+msgstr "Auteur"
+
+msgid "Comment"
+msgstr "Commentaires"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Moderation"
+msgstr "Modération"

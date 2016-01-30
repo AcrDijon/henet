@@ -1,15 +1,15 @@
 <div class="page-header">
-<h1>Modération des commentaires</h1>
+<h1>{{_('Moderate comments')}}</h1>
 </div>
 
 <table class="table table-striped">
   <thead>
   <tr>
-   <th>Date</th>
-   <th>Auteur</th>
-   <th>Commentaire</th>
-   <th>Article</th>
-   <th>Actions</th>
+   <th>{{_('Date')}}</th>
+   <th>{{_('Author')}}</th>
+   <th>{{_('Comment')}}</th>
+   <th>{{_('Article')}}</th>
+   <th>{{_('Actions')}}</th>
    </tr>
   </thead>
 <tbody>
@@ -51,4 +51,4 @@
   });
 </script>
 
-% rebase('base.tpl', page_title="Modération")
+% rebase('base.tpl', page_title="_('Moderation')")

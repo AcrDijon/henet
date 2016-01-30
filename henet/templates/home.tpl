@@ -5,12 +5,12 @@
 
   % if content_changed:
 <p>
-  <strong>Le site a été modifié</strong>
+  <strong>{{_('The content was modified')}}</strong>
 </p>
   % end
 
 <form role="form" action="/build" method="POST"  accept-charset="utf8">
-  <input type="submit" class="btn btn-lg btn-danger" value="Mettre à jour le site"></input>
+  <input type="submit" class="btn btn-lg btn-danger" value="{{_('Update the website')}}"></input>
 </form>
 
 
@@ -20,11 +20,11 @@
 
 
 <div class="page-header">
-  <h2>Ajout d'un article</h2>
+  <h2>{{_('Adding an article')}}</h2>
 </div>
 <form role="form" action="/create" method="POST"  accept-charset="utf8">
  <div class="form-group">
-   <label for="title">Titre de l'article:</label>
+   <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title"></input>
  </div>
 
@@ -36,16 +36,20 @@
     % end
   % end
  </p>
+</form>
 </div>
-<div class="col-xs-8 col-sm-6">
 
+
+<div class="col-xs-8 col-sm-6">
 <div class="page-header">
-  <h2>Ajout d'une page</h2>
+  <h2>{{_('Adding a page')}}</h2>
 </div>
+<form role="form" action="/create" method="POST"  accept-charset="utf8">
+ <div class="form-group">
 
  <div class="form-group">
-   <label for="title">Titre de la page:</label>
-   <input class="form-control" id="title" type="text" name="title"></input>
+   <label for="page_title">{{_('Title')}}:</label>
+   <input class="form-control" id="page_title" type="text" name="title"></input>
  </div>
 
  <p>

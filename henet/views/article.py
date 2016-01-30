@@ -11,7 +11,7 @@ from henet.events import (emit, EVENT_CHANGED_CONTENT, EVENT_CREATED_CONTENT,
                           EVENT_DELETED_CONTENT)
 
 
-@post("/delete/category/<category>/<article:path>")
+@post("/delete/category/<category>/<article:path>", no_i18n=True)
 def del_article(category, article):
     cat_path = dict(app.vars['categories'])[category]['path']
     article_path = os.path.join(cat_path, article)
@@ -20,7 +20,7 @@ def del_article(category, article):
     redirect('/category/%s' % category)
 
 
-@post("/delete/page/<page>/<article:path>")
+@post("/delete/page/<page>/<article:path>", no_i18n=True)
 def del_page(page, article):
     page_path = dict(app.vars['pages'])[page]['path']
     article_path = os.path.join(page_path, article)
@@ -53,7 +53,7 @@ def get_article(category, article):
             'filename': os.path.split(article_path)[-1]}
 
 
-@post("/page/<page>/<article:path>")
+@post("/page/<page>/<article:path>", no_i18n=True)
 def post_page(page, article):
     data = dict(request.POST.decode())
     cache_dir = app._config['henet']['cache_dir']
@@ -76,7 +76,7 @@ def post_page(page, article):
     redirect('/page/%s/%s' % (page, article['filename']))
 
 
-@post("/category/<category>/<article:path>")
+@post("/category/<category>/<article:path>", no_i18n=True)
 def post_article(category, article):
     data = dict(request.POST.decode())
     cache_dir = app._config['henet']['cache_dir']
@@ -123,7 +123,7 @@ Une image:
 """
 
 
-@post("/create")
+@post("/create", no_i18n=True)
 def create_article_or_page():
     data = dict(request.POST.decode())
     article = Article()
