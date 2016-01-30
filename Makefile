@@ -26,3 +26,7 @@ test:
 
 coverage: build
 	LONG=1 $(BIN)/nosetests -s -d -v --cover-html --cover-html-dir=html --with-coverage --cover-erase --cover-package henet henet/tests
+
+i18n:
+	bin/pybabel compile -d henet/locales -f -i henet/locales/fr_FR/LC_MESSAGES/messages.pot -l fr_FR
+	bin/pybabel compile -d henet/locales -f -i henet/locales/en_US/LC_MESSAGES/messages.pot -l en_US

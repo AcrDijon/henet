@@ -65,6 +65,12 @@
               <li class="active"><a href="/comments"><em><strong>Modération</strong></em></a></li>
             % end
           </ul>
+        <div class="navbar-right">
+         % for lang, label in langs:
+          <a href="/{{lang}}" alternate="{{label}}" title="{{label}}"><img src="/resources/images/{{lang}}.png"></img></a>
+         % end
+        </div>
+
         </div><!--/.nav-collapse -->
       </div>
     </nav>

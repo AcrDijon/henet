@@ -14,6 +14,7 @@ import multiprocessing_logging
 from henet.events import subscribe, ALL_EVENTS, event2str
 from henet.workers import MemoryWorkers
 from henet.util import send_email
+from bottle_utils.i18n import I18NPlugin
 
 
 HERE = os.path.dirname(__file__)
@@ -21,6 +22,7 @@ TEMPLATES = os.path.join(HERE, 'templates')
 bottle.TEMPLATE_PATH.append(TEMPLATES)
 
 RESOURCES_PATH = os.path.join(HERE, 'resources')
+LOCALES_PATH = os.path.join(HERE, 'locales')
 DEFAULT_DEBUG = True
 DEFAULT_PORT = 8080
 DEFAULT_HOST = 'localhost'
@@ -59,8 +61,16 @@ def main():
 
     config = konfig.Config(config_file)
     bottle.debug(config['henet'].get('debug', DEFAULT_DEBUG))
-
     app = bottle.app()
+
+    # setting up languages
+    default_locale = config['henet'].get('default_locale', 'fr_FR')
+    langs = [[p.strip() for p in lang.split(',')] for lang
+             in config['henet'].get('langs', ['fr_FR'])]
+
+    app = I18NPlugin(app, langs=langs, default_locale=default_locale,
+                     locale_dir=LOCALES_PATH)
+
     cats = []
 
     config_cats = config['henet']['categories']
@@ -90,7 +100,8 @@ def main():
     app_stack.vars = app.vars = {'pages': pages,
                                  'categories': cats,
                                  'get_alerts': get_alerts,
-                                 'site_url': config['henet']['site_url']}
+                                 'site_url': config['henet']['site_url'],
+                                 'langs': langs}
 
     app_stack.view = partial(view, **app.vars)
     app_stack._config = app._config = config

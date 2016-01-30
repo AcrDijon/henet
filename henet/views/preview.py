@@ -1,18 +1,19 @@
 from bottle import request, post, get
+from bottle_utils.i18n import lazy_gettext as _
 from henet.rst.rst2html import rst2html
 from henet.util import md5
 
 
 @get("/preview")
 def get_preview():
-    return 'Loading...'
+    return _('Loading...')
 
 
 # XXX make this redis
 _CACHE = {}
 
 
-@post("/preview")
+@post("/preview", no_i18n=True)
 def build_preview():
     rst = request.POST['rst']
     key = md5(rst)

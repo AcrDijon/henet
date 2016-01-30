@@ -1,6 +1,6 @@
 
 <div class="page-header">
-  <h1>Gestion du site</h1>
+  <h1>{{_('Website management')}}</h1>
 </div>
 
   % if content_changed:

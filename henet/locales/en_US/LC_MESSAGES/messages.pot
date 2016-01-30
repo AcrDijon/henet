@@ -1,0 +1,5 @@
+msgid "Website management"
+msgstr "Website management"
+
+msgid "Loading..."
+msgstr "Loading..."
