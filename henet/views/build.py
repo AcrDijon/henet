@@ -10,7 +10,7 @@ def _run(command):
     return subprocess.call(command, shell=True)
 
 
-@post("/build")
+@post("/build", no_i18n=True)
 def build():
     if app.workers.in_progress('build-pelican'):
         emit(EVENT_ALREADY_BUILDING)
