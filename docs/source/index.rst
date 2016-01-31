@@ -28,15 +28,7 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+
    run
    configuration
    pelican
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
