@@ -39,4 +39,5 @@ setup(name='henet',
       entry_points="""
       [console_scripts]
       henet-server = henet.app:main
+      henet-quickstart = henet.quickstart:main
       """)
