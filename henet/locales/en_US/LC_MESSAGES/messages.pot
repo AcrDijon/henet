@@ -66,3 +66,21 @@ msgstr "Actions"
 
 msgid "Moderation"
 msgstr "Moderation"
+
+msgid "Content changed."
+msgstr "Content changed."
+
+msgid "Content deleted."
+msgstr "Content deleted."
+
+msgid "Content created."
+msgstr "Content created."
+
+msgid "Update started."
+msgstr "Update started."
+
+msgid "Update finished."
+msgstr "Update finished."
+
+msgid "Update already in progress."
+msgstr "Update already in progress."

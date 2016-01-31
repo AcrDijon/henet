@@ -1,5 +1,7 @@
 # encoding: utf8
 from collections import defaultdict
+from bottle_utils.i18n import lazy_gettext as _
+
 
 _SUBSCRIBERS = defaultdict(list)
 
@@ -15,17 +17,17 @@ EVENT_BUILT = 4
 
 def event2str(event):
     if event == EVENT_CHANGED_CONTENT:
-        return 'Contenu modifié'
+        return _('Content changed.')
     elif event == EVENT_DELETED_CONTENT:
-        return 'Contenu supprimé'
+        return _('Content deleted.')
     elif event == EVENT_CREATED_CONTENT:
-        return 'Contenu créé'
+        return _('Contenu created')
     elif event == EVENT_START_BUILDING:
-        return 'Mise à jour lancée'
+        return _('Updated started.')
     elif event == EVENT_BUILT:
-        return 'Mise à jour terminée'
+        return _('Update finished.')
     elif event == EVENT_ALREADY_BUILDING:
-        return 'Mise à jour déjà en cours'
+        return _('Update already in progress.')
     return ''
 
 

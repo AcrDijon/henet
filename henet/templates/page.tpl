@@ -1,16 +1,16 @@
 <div class="page-header">
-  <h1>Edition du fichier "{{ filename }}"</h1>
+  <h1>{{_('Edition of file')}} "{{ filename }}"</h1>
 </div>
 
 
 <form role="form" action="/page/{{page}}/{{filename}}" method="POST"  accept-charset="utf8">
  <div class="form-group">
-   <label for="title">Titre:</label>
+   <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title" value="{{ article['title'] }}"></input>
  </div>
 
  <div class="form-group">
-   <label for="date">Date:</label>
+   <label for="date">{{_('Date')}}:</label>
    <input class="form-control" id="date" name="data" type="text" value="{{article['metadata'].get('date', now).strftime('%d/%m/%Y') }}"></input>
  </div>
 
@@ -23,7 +23,7 @@
     <span style="clear: both"></span>
  </div>
 
- <button type="submit" class="btn btn-default">Sauvegarder</button>
+ <button type="submit" class="btn btn-default">{{_('Save')}}</button>
 
 </form>
 
