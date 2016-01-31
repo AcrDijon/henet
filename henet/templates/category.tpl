@@ -28,6 +28,7 @@
  <td>
   <form action="/delete/category/{{ category }}/{{article['filename']}}"
         method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
+   <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
     <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
@@ -54,6 +55,7 @@
 </div>
 
 <form role="form" action="/create" method="POST"  accept-charset="utf8">
+ <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
  <div class="form-group">
    <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title"></input>

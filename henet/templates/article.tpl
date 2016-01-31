@@ -4,6 +4,7 @@
 
 
 <form role="form" action="/category/{{category}}/{{filename}}" method="POST"  accept-charset="utf8">
+ <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
  <div class="form-group">
    <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title" value="{{ article['title'] }}"></input>

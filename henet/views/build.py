@@ -1,5 +1,6 @@
 import subprocess
 from bottle import post, app, redirect
+from bottle_utils.csrf import csrf_protect
 
 from henet.events import (emit, EVENT_BUILT, EVENT_ALREADY_BUILDING,
                           EVENT_START_BUILDING)
@@ -11,6 +12,7 @@ def _run(command):
 
 
 @post("/build", no_i18n=True)
+@csrf_protect
 def build():
     if app.workers.in_progress('build-pelican'):
         emit(EVENT_ALREADY_BUILDING)

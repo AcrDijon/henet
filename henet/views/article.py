@@ -4,6 +4,7 @@ import datetime
 
 from bottle import route, request, app, post, redirect
 from pelican.utils import slugify
+from bottle_utils.csrf import csrf_protect, csrf_token
 
 from henet.util import parse_article
 from henet.article import Article
@@ -12,6 +13,7 @@ from henet.events import (emit, EVENT_CHANGED_CONTENT, EVENT_CREATED_CONTENT,
 
 
 @post("/delete/category/<category>/<article:path>", no_i18n=True)
+@csrf_protect
 def del_article(category, article):
     cat_path = dict(app.vars['categories'])[category]['path']
     article_path = os.path.join(cat_path, article)
@@ -21,6 +23,7 @@ def del_article(category, article):
 
 
 @post("/delete/page/<page>/<article:path>", no_i18n=True)
+@csrf_protect
 def del_page(page, article):
     page_path = dict(app.vars['pages'])[page]['path']
     article_path = os.path.join(page_path, article)
@@ -31,6 +34,7 @@ def del_page(page, article):
 
 @route("/page/<page>/<article:path>")
 @app.view("page")
+@csrf_token
 def get_page(page, article):
     cache_dir = app._config['henet']['cache_dir']
     page_path = dict(app.vars['pages'])[page]['path']
@@ -38,11 +42,13 @@ def get_page(page, article):
     article = parse_article(article_path, cache_dir, page_path)
     return {'article': article, 'page': page,
             'now': datetime.datetime.now(),
+            'csrf_token': request.csrf_token,
             'filename': os.path.split(article_path)[-1]}
 
 
 @route("/category/<category>/<article:path>")
 @app.view("article")
+@csrf_token
 def get_article(category, article):
     cache_dir = app._config['henet']['cache_dir']
     cat_path = dict(app.vars['categories'])[category]['path']
@@ -50,10 +56,12 @@ def get_article(category, article):
     article = parse_article(article_path, cache_dir, cat_path)
     return {'article': article, 'category': category,
             'now': datetime.datetime.now(),
+            'csrf_token': request.csrf_token,
             'filename': os.path.split(article_path)[-1]}
 
 
 @post("/page/<page>/<article:path>", no_i18n=True)
+@csrf_protect
 def post_page(page, article):
     data = dict(request.POST.decode())
     cache_dir = app._config['henet']['cache_dir']
@@ -77,6 +85,7 @@ def post_page(page, article):
 
 
 @post("/category/<category>/<article:path>", no_i18n=True)
+@csrf_protect
 def post_article(category, article):
     data = dict(request.POST.decode())
     cache_dir = app._config['henet']['cache_dir']
@@ -124,6 +133,7 @@ Une image:
 
 
 @post("/create", no_i18n=True)
+@csrf_protect
 def create_article_or_page():
     data = dict(request.POST.decode())
     article = Article()

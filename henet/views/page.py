@@ -1,11 +1,13 @@
 import datetime
 from bottle import route, request, app
+from bottle_utils.csrf import csrf_token
 from pelican.utils import slugify
 from henet.util import parse_articles
 
 
 @route("/page/<name>")
 @app.view("pages")
+@csrf_token
 def page(name):
     page = int(request.params.get('page', 0))
     data = dict(app.vars['pages'])[name]
@@ -27,4 +29,5 @@ def page(name):
     return {"page": name, 'articles': articles,
             "data": data, "total_pages": total_pages,
             "can_create": data['can_create'],
+            "csrf_token": request.csrf_token,
             "current_page": page, "now": datetime.datetime.now()}

@@ -28,12 +28,14 @@
  <td>
   <form action="/comments/{{ comment.uuid }}/activate"
         method="POST">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
     <button type="submit" class="btn btn-xs btn-success">
       <span class="glyphicon glyphicon-ok"></span>
     </button>
   </form>
   <form action="/comments/{{ comment.uuid }}/reject"
         method="POST">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
     <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-remove"></span>
     </button>

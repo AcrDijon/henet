@@ -63,6 +63,11 @@ def main():
     bottle.debug(config['henet'].get('debug', DEFAULT_DEBUG))
     app = bottle.app()
 
+    # bottle config used by bottle-utils
+    csrf_config = dict([('csrf.%s' % key, val) for key, val in
+                        config.items('csrf')])
+    app.config.update(csrf_config)
+
     # setting up languages
     default_locale = config['henet'].get('default_locale', 'fr_FR')
     langs = [[p.strip() for p in lang.split(',')] for lang
@@ -123,6 +128,7 @@ def main():
 
     subscribe(ALL_EVENTS, add_alert)
     signal.signal(signal.SIGINT, _close_workers)
+
     run(app=app,
         host=config['henet'].get('host', DEFAULT_HOST),
         port=config['henet'].get('port', DEFAULT_PORT),

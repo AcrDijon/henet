@@ -2,6 +2,7 @@ import os
 import datetime
 from bottle import route, request, app
 from pelican.utils import slugify
+from bottle_utils.csrf import csrf_token
 
 from henet.util import parse_articles
 from henet.comments import CommentsDB
@@ -10,6 +11,7 @@ from henet.comments import CommentsDB
 # XXX batch by year!
 @route("/category/<name>")
 @app.view("category")
+@csrf_token
 def category(name):
     page = int(request.params.get('page', 0))
     data = dict(app.vars['categories'])[name]
@@ -38,4 +40,5 @@ def category(name):
     return {"category": name, 'articles': articles,
             "data": data, "total_pages": total_pages,
             "can_create": data['can_create'],
+            "csrf_token": request.csrf_token,
             "current_page": page, "now": datetime.datetime.now()}

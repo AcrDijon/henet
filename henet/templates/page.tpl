@@ -4,7 +4,8 @@
 
 
 <form role="form" action="/page/{{page}}/{{filename}}" method="POST"  accept-charset="utf8">
- <div class="form-group">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+  <div class="form-group">
    <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title" value="{{ article['title'] }}"></input>
  </div>

@@ -10,6 +10,7 @@
   % end
 
 <form role="form" action="/build" method="POST"  accept-charset="utf8">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
   <input type="submit" class="btn btn-lg btn-danger" value="{{_('Update the website')}}"></input>
 </form>
 
@@ -23,6 +24,7 @@
   <h2>{{_('Adding an article')}}</h2>
 </div>
 <form role="form" action="/create" method="POST"  accept-charset="utf8">
+ <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
  <div class="form-group">
    <label for="title">{{_('Title')}}:</label>
    <input class="form-control" id="title" type="text" name="title"></input>
@@ -45,6 +47,7 @@
   <h2>{{_('Adding a page')}}</h2>
 </div>
 <form role="form" action="/create" method="POST"  accept-charset="utf8">
+ <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
  <div class="form-group">
 
  <div class="form-group">
