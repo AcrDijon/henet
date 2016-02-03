@@ -4,6 +4,7 @@ import sys
 import os
 from functools import partial
 from logging.config import fileConfig
+import codecs
 
 import bottle
 from bottle import route, run, view, app as app_stack
@@ -56,10 +57,25 @@ def main():
     else:
         config_file = DEFAULT_CONFIG
 
+    app = make_app(config_file)
+
+    with codecs.open(config_file, 'r', 'utf8') as f:
+        config = konfig.Config(f)
+
+    run(app=app,
+        host=config['henet'].get('host', DEFAULT_HOST),
+        port=config['henet'].get('port', DEFAULT_PORT),
+        server='waitress')
+
+
+def make_app(config_file):
+
     fileConfig(config_file)
     multiprocessing_logging.install_mp_handler()
 
-    config = konfig.Config(config_file)
+    with codecs.open(config_file, 'r', 'utf8') as f:
+        config = konfig.Config(f)
+
     bottle.debug(config['henet'].get('debug', DEFAULT_DEBUG))
     app = bottle.app()
 
@@ -102,15 +118,18 @@ def main():
             values['can_create'] = True
         pages.append((page, values))
 
+    use_comments = config['henet'].get('comments', True)
     app_stack.vars = app.vars = {'pages': pages,
                                  'categories': cats,
                                  'get_alerts': get_alerts,
                                  'site_url': config['henet']['site_url'],
+                                 'use_comments': use_comments,
                                  'langs': langs}
 
     app_stack.view = partial(view, **app.vars)
     app_stack._config = app._config = config
     app_stack.workers = app.workers = MemoryWorkers()
+    app_stack.use_comments = app.use_comments = use_comments
 
     smtp_config = dict(config.items('smtp'))
 
@@ -129,11 +148,7 @@ def main():
     subscribe(ALL_EVENTS, add_alert)
     signal.signal(signal.SIGINT, _close_workers)
 
-    run(app=app,
-        host=config['henet'].get('host', DEFAULT_HOST),
-        port=config['henet'].get('port', DEFAULT_PORT),
-        server='waitress')
-
+    return app
 
 if __name__ == '__main__':
     main()
