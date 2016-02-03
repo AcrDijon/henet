@@ -6,8 +6,18 @@ from docutils import nodes, writers
 from docutils.nodes import SkipNode
 from docutils import io, core
 
-from pelican.utils import get_date
+from pelican.utils import get_date as _get_date
+import pytz
 from henet.article import Article
+
+
+def get_date(data):
+    """Add tzinfo"""
+    res = _get_date(data)
+    # assuming UTC by default
+    if res.tzinfo is None:
+        res = pytz.utc.localize(res)
+    return res
 
 
 class Writer(writers.Writer):
