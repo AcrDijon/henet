@@ -266,6 +266,8 @@ class ArticleThread(object):
 class CommentsDB(object):
     def __init__(self, storage_dir):
         self.storage_dir = storage_dir
+        if not os.path.exists(storage_dir):
+            os.makedirs(storage_dir)
 
     def _get_comment(self, uuid):
         thread = comment = None
