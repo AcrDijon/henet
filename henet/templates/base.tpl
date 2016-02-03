@@ -94,7 +94,7 @@
                           <strong>Info</strong> {{alert}}
                         </div>
                         % end
-                        %include
+                        {{!base}}
                     </div>
                 </div>
                 <!-- END-CONTENT -->

@@ -22,6 +22,7 @@ clean:
 	rm -rf $(BUILD_DIRS)
 
 test:
+	$(BIN)/pip install -rdev-reqs.txt
 	$(BIN)/nosetests -sv henet/tests
 
 coverage: build
