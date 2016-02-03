@@ -1,8 +1,10 @@
 # encoding: utf8
 import unittest
 import time
+import logging
 
 from henet.workers import MemoryWorkers
+from henet import logger
 
 
 def boom():
@@ -12,9 +14,11 @@ def boom():
 class TestMemoryWorkers(unittest.TestCase):
     def setUp(self):
         self.workers = MemoryWorkers(size=1)
+        logger.setLevel(logging.CRITICAL)
 
     def tearDown(self):
         self.workers.close()
+        logger.setLevel(logging.DEBUG)
 
     def test_async(self):
         workers = self.workers
