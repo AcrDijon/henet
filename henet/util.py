@@ -46,6 +46,8 @@ def parse_article(path, cache_dir, root_path):
 
 
 def parse_articles(path, cache_dir, page=-1, page_size=20):
+    if isinstance(path, unicode):
+        path = path.encode('utf8')
     articles = []
     for root, dirs, files in os.walk(path):
         for file_ in files:
@@ -94,6 +96,8 @@ def send_email(tos, subject, body, smtp_config):
 
 def hash(directory):
     articles = []
+    if isinstance(directory, unicode):
+        directory = directory.encode('utf8')
 
     for root, dirs, files in os.walk(directory):
         for file_ in files:
