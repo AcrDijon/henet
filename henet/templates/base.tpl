@@ -58,11 +58,12 @@
                 <li><a href="/page/{{ page_ }}">{{ data['title'] }}</a></li>
                 % end
             % end
-
-            % if category != 'comments':
+            % if use_comments:
+              % if category != 'comments':
               <li><a href="/comments"><em><strong>{{_('Moderate')}}</strong></em></a></li>
-            % else:
+              % else:
               <li class="active"><a href="/comments"><em><strong>{{_('Moderate')}}</strong></em></a></li>
+              % end
             % end
           </ul>
         <div class="navbar-right">

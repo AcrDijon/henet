@@ -8,7 +8,9 @@
    <th>{{_('Date')}}</th>
    <th>{{_('Title')}}</th>
    <th>{{_('URL')}}</th>
+   % if use_comments:
    <th>{{_('Comments')}}</th>
+   % end
    <th>{{_('Suppression')}}</th>
    </tr>
   </thead>
@@ -22,9 +24,11 @@
   </a>
  </td>
  <td><a href="{{ article['url'] }}">{{ article['url'] }}</a></td>
+ % if use_comments:
  <td>
   {{article['comments_count']}}
  </td>
+ % end
  <td>
   <form action="/delete/category/{{ category }}/{{article['filename']}}"
         method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
