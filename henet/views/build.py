@@ -10,7 +10,7 @@ from henet.util import save_build_hash
 
 
 def _run(command, wdir):
-    return subprocess.call(command, shell=True, cwd=wdir)
+    return subprocess.call([command], cwd=wdir)
 
 
 @post("/build", no_i18n=True)
