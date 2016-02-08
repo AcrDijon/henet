@@ -40,4 +40,4 @@ class Article(dict):
         res += self['body']
         if not res.endswith(u'\n'):
             res += u'\n'
-        return res
+        return res.replace(u'\r\n', '\n')
