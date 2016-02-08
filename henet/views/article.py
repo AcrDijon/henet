@@ -166,8 +166,9 @@ def create_article_or_page():
 
     if page is None:
         # it's an article
-        article.set_metadata('category', category)
-        path = dict(app.vars['categories'])[category]['path']
+        cat_info = dict(app.vars['categories'])[category]
+        article.set_metadata('category', cat_info['title'])
+        path = cat_info['path']
     else:
         # it's a page
         path = dict(app.vars['pages'])[page]['path']
