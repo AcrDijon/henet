@@ -26,3 +26,18 @@ class TestCategory(TestView):
         # should be gone
         resp = resp.follow()
         self.assertTrue('new' not in resp.text)
+
+    def test_no_empty_title(self):
+        resp = self.app.get('/category/actus')
+        self.assertEqual(resp.status_int, 302)
+        resp = resp.follow()
+        self.assertEqual(resp.status_int, 200)
+
+        # adding an article
+        create_form = resp.forms[1]
+        resp = create_form.submit('cat_add_actus')
+
+        # we should be redirected to the category with a flash
+        # message
+        cat_page = resp.follow().follow()
+        self.assertTrue('A title is required' in cat_page.text)

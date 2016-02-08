@@ -130,6 +130,7 @@ def make_app(config_file):
     app_stack._config = app._config = config
     app_stack.workers = app.workers = MemoryWorkers()
     app_stack.use_comments = app.use_comments = use_comments
+    app_stack.add_alert = app.add_alert = add_alert
 
     smtp_config = dict(config.items('smtp'))
 

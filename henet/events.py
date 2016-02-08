@@ -21,14 +21,14 @@ def event2str(event):
     elif event == EVENT_DELETED_CONTENT:
         return _('Content deleted.')
     elif event == EVENT_CREATED_CONTENT:
-        return _('Contenu created')
+        return _('Content created')
     elif event == EVENT_START_BUILDING:
         return _('Updated started.')
     elif event == EVENT_BUILT:
         return _('Update finished.')
     elif event == EVENT_ALREADY_BUILDING:
         return _('Update already in progress.')
-    return ''
+    return event
 
 
 def subscribe(event, callback):

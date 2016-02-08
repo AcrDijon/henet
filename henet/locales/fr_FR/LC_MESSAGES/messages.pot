@@ -84,3 +84,6 @@ msgstr "Mise à jour terminée."
 
 msgid "Update already in progress."
 msgstr "Mise à jour déjà en cours."
+
+msgid "A title is required."
+msgstr "Un titre est requis"

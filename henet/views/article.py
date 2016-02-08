@@ -5,6 +5,7 @@ import datetime
 from bottle import route, request, app, post, redirect
 from pelican.utils import slugify
 from bottle_utils.csrf import csrf_protect, csrf_token
+from bottle_utils.i18n import lazy_gettext as _
 
 from henet.util import parse_article
 from henet.article import Article
@@ -136,14 +137,6 @@ Une image:
 @csrf_protect
 def create_article_or_page():
     data = dict(request.POST.decode())
-    article = Article()
-
-    article['title'] = data['title']
-    article['body'] = data.get('body', DEFAULT_BODY)
-
-    date = datetime.datetime.now()
-    article.set_metadata('date', date)
-
     category = u'resultats'
     page = None
 
@@ -154,6 +147,22 @@ def create_article_or_page():
         if key.startswith(u'page_add_'):
             page = key[len(u'page_add_'):]
             break
+
+    title = data.get('title', u'').strip()
+    if len(title) == 0:
+        # nope
+        app.add_alert(_('A title is required.'))
+        if page is None:
+            redirect('/category/%s' % category)
+        else:
+            redirect('/page/%s' % page)
+        return
+
+    article = Article()
+    article['title'] = data['title']
+    article['body'] = data.get('body', DEFAULT_BODY)
+    date = datetime.datetime.now()
+    article.set_metadata('date', date)
 
     if page is None:
         # it's an article
