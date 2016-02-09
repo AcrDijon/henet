@@ -18,6 +18,12 @@ class TestPages(TestView):
         self.assertEqual(article_page.status_int, 200)
         self.assertEqual(article_page.form['title'].value, 'New page')
 
+        # let's change its body
+        article_page.forms[0]['body'] = 'blah'
+        resp = article_page.forms[0].submit()
+        body = resp.follow().follow().forms[0]['body'].value
+        self.assertEqual(body.strip(), 'blah')
+
         # let's go back to the category view and suppress it
         resp = self.app.get('/page/pages').follow()
         last_page_suppress_form = resp.forms[0]

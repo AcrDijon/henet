@@ -1,4 +1,5 @@
 # encoding: utf8
+import time
 import os
 from henet.tests.support import TestView
 from henet.rst.parse import parse_article
@@ -27,13 +28,36 @@ class TestCategory(TestView):
         parsed = parse_article(filename)
         self.assertEqual(parsed['metadata']['category'], u'Actualités')
 
-        # let's go back to the category view and suppress it
+        # let's change its body and date
+        article_page.forms[0]['body'] = 'blah'
+        article_page.forms[0]['date'] = '16/11/2012'
+        resp = article_page.forms[0].submit()
+        body = resp.follow().follow().forms[0]['body'].value
+        self.assertEqual(body.strip(), 'blah')
+
+        # let's create a new article with the same title
+        resp = self.app.get('/category/actus')
+        self.assertEqual(resp.status_int, 302)
+        resp = resp.follow()
+        self.assertEqual(resp.status_int, 200)
+
+        # adding the 2nd article
+        create_form = resp.forms[2]
+        create_form['title'] = 'New article'
+        resp = create_form.submit('cat_add_actus')
+        filename2 = os.path.join(cat_dir, 'new-article1.rst')
+        self.assertTrue(os.path.exists(filename2))
+        os.remove(filename2)
+
+        # let's suppress the first article
         resp = self.app.get('/category/actus').follow()
-        last_article_suppress_form = resp.forms[0]
-        resp = last_article_suppress_form.submit().follow()
+        for form in resp.forms.values():
+            if 'new-article' in form.action:
+                form.submit()
+                break
 
         # should be gone
-        resp = resp.follow()
+        resp = self.app.get('/category/actus').follow()
         self.assertTrue('New article' not in resp.text)
 
     def test_no_empty_title(self):

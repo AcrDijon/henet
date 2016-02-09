@@ -31,8 +31,12 @@ def parse_article(path, cache_dir, root_path):
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
 
-    age = file_age(path)
-    cache = os.path.join(cache_dir, md5(str(age)+path.encode('utf8')))
+    # XXX two reads...
+    with open(path) as f:
+        file_md5 = md5(f.read())
+
+    cache = os.path.join(cache_dir, file_md5)
+
     if os.path.exists(cache):
         with open(cache) as f:
             article = Article(bson.loads(f.read()))
@@ -48,6 +52,7 @@ def parse_article(path, cache_dir, root_path):
 def parse_articles(path, cache_dir, page=-1, page_size=20):
     if isinstance(path, unicode):
         path = path.encode('utf8')
+
     articles = []
     for root, dirs, files in os.walk(path):
         for file_ in files:

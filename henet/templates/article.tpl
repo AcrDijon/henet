@@ -17,7 +17,7 @@
 
  <div class="form-group">
    <label for="date">{{_('Date')}}:</label>
-   <input class="form-control" id="date" name="data" type="text" value="{{article['metadata'].get('date', now).strftime('%d/%m/%Y') }}"></input>
+   <input class="form-control" id="date" name="date" type="text" value="{{article['metadata'].get('date', now).strftime('%d/%m/%Y') }}"></input>
  </div>
 
  <div class="form-group">

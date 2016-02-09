@@ -5,9 +5,10 @@ import os
 from functools import partial
 from logging.config import fileConfig
 import codecs
+from collections import defaultdict
 
 import bottle
-from bottle import route, run, view, app as app_stack
+from bottle import route, run, view, app as app_stack, request
 from bottle import static_file
 import konfig
 import multiprocessing_logging
@@ -35,20 +36,30 @@ def serve_static(filepath):
     return static_file(filepath, root=RESOURCES_PATH)
 
 
-_alerts = []
+
+# make this a plugin
+_alerts = defaultdict(list)
 
 
 def add_alert(event, **data):
-    # per-thread ? per-user ?
-    _alerts.append(event2str(event))
-
-
-def get_alerts():
-    while True:
+    if 'client_id' not in data:
         try:
-            yield _alerts.pop()
-        except IndexError:
-            break
+            client_id = request.remote_addr
+        except RuntimeError:
+            raise AttributeError('No Client id')
+    else:
+        client_id = data['client_id']
+
+    _alerts[client_id].append(event2str(event))
+
+
+def get_alerts(client_id=None):
+    if client_id is None:
+        client_id = request.remote_addr
+    try:
+        return list(_alerts[client_id])
+    finally:
+        del _alerts[client_id]
 
 
 def main():

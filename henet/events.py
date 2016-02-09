@@ -1,7 +1,7 @@
 # encoding: utf8
 from collections import defaultdict
 from bottle_utils.i18n import lazy_gettext as _
-
+from bottle import request
 
 _SUBSCRIBERS = defaultdict(list)
 
@@ -12,7 +12,7 @@ EVENT_CREATED_CONTENT = 2
 EVENT_CREATED_COMMENT = 3
 EVENT_START_BUILDING = 4
 EVENT_ALREADY_BUILDING = 5
-EVENT_BUILT = 4
+EVENT_BUILT = 5
 
 
 def event2str(event):
@@ -23,7 +23,7 @@ def event2str(event):
     elif event == EVENT_CREATED_CONTENT:
         return _('Content created')
     elif event == EVENT_START_BUILDING:
-        return _('Updated started.')
+        return _('Update started.')
     elif event == EVENT_BUILT:
         return _('Update finished.')
     elif event == EVENT_ALREADY_BUILDING:
