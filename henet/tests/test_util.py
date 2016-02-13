@@ -1,8 +1,6 @@
 # encoding: utf8
 import unittest
-import time
-
-from mock import patch, call
+from mock import patch
 from henet.util import send_email
 
 

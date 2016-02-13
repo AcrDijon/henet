@@ -1,7 +1,7 @@
 # encoding: utf8
 from collections import defaultdict
 from bottle_utils.i18n import lazy_gettext as _
-from bottle import request
+
 
 _SUBSCRIBERS = defaultdict(list)
 

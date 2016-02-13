@@ -1,5 +1,4 @@
 # encoding: utf8
-import time
 import os
 from henet.tests.support import TestView
 from henet.rst.parse import parse_article

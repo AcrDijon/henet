@@ -1,2 +1,2 @@
 from henet.views import (home, category, article, preview, comments,    # NOQA
-                         page, build)  # NOQA
+                         page, build, media)  # NOQA

@@ -1,5 +1,4 @@
 # encoding: utf8
-import time
 from henet.tests.support import TestView
 
 

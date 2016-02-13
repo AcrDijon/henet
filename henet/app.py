@@ -36,7 +36,6 @@ def serve_static(filepath):
     return static_file(filepath, root=RESOURCES_PATH)
 
 
-
 # make this a plugin
 _alerts = defaultdict(list)
 
@@ -130,17 +129,21 @@ def make_app(config_file):
         pages.append((page, values))
 
     use_comments = config['henet'].get('comments', True)
+    use_media = config['henet'].get('media', True)
+
     app_stack.vars = app.vars = {'pages': pages,
                                  'categories': cats,
                                  'get_alerts': get_alerts,
                                  'site_url': config['henet']['site_url'],
                                  'use_comments': use_comments,
+                                 'use_media': use_media,
                                  'langs': langs}
 
     app_stack.view = partial(view, **app.vars)
     app_stack._config = app._config = config
     app_stack.workers = app.workers = MemoryWorkers()
     app_stack.use_comments = app.use_comments = use_comments
+    app_stack.use_media = app.use_media = use_media
     app_stack.add_alert = app.add_alert = add_alert
 
     smtp_config = dict(config.items('smtp'))

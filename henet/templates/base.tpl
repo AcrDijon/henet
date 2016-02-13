@@ -65,6 +65,14 @@
               <li class="active"><a href="/comments"><em><strong>{{_('Moderate')}}</strong></em></a></li>
               % end
             % end
+            % if use_media:
+              % if category != 'media':
+              <li><a href="/media"><em><strong>{{_('Media')}}</strong></em></a></li>
+              % else:
+              <li class="active"><a href="/media"><em><strong>{{_('Media')}}</strong></em></a></li>
+              % end
+            % end
+
           </ul>
         <div class="navbar-right">
          % for lang, label in langs:

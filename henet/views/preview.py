@@ -15,7 +15,7 @@ _CACHE = {}
 
 @post("/preview", no_i18n=True)
 def build_preview():
-    rst = request.POST['rst']
+    rst = request.json.get('rst', '')
     key = md5(rst)
     if key in _CACHE:
         return _CACHE[key]
