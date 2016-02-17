@@ -2,36 +2,23 @@
 <h1>{{_('Media management')}}</h1>
 </div>
 
-<table class="table table-striped">
- <thead>
-  <tr>
-   <th>{{_('Name')}}</th>
-   <th>{{_('Size')}}</th>
-   <th>{{_('Modified')}}</th>
-   <th>{{_('Filetype')}}</th>
-   <th>{{_('Suppression')}}</th>
-  </tr>
- </thead>
-<tbody>
 % for file in files:
-<tr>
- <td><a href="/media/{{ file['name'] }}">{{ file['name'] }}</a></td>
- <td>{{ file['size'] }}</td>
- <td>{{ file['modified'].strftime('%d/%m/%Y') }}</td>
- <td><img title="{{file['type']}}" alt="{{file['type']}}" src="/resources/images/mimetypes/{{ file['image-type'] }}"></img></td>
- <td>
-  <form action="/delete/media/{{file['name']}}"
+<div style="float:left; margin: 4px; max-width: 200px; max-height:200px">
+  <a href="/media/{{ file['name'] }}" data-lightbox="{{file['name']}}" id="a-{{file['name']}}">
+    <img src="/thumbnail/200x200/{{ file['name'] }}"/>
+  </a>
+  <!--form style="float:right" action="/delete/media/{{file['name']}}"
         method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
-   <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
-    <button type="submit" class="btn btn-xs btn-danger">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+    <button type="submit" class="btn btn-xs btn-danger" onmouseover="$('#a-{{file['name']}}').css('pointer-events', 'none')">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
-  </form>
- </td>
-</tr>
+  </form-->
+</div>
 % end
-</tbody>
-</table>
+<div style="clear:both"/>
+
+
 % if total_pages > 1:
   % for page in range(total_pages):
   % if page == current_page:
@@ -60,5 +47,6 @@
  </p>
 </form>
 
+<script src="/resources/js/lightbox-plus-jquery.min.js"></script>
 
 % rebase('base.tpl', page_title=_('Media Management'))

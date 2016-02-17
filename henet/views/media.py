@@ -3,8 +3,9 @@ import os
 import datetime
 from mimetypes import guess_type
 
-from bottle import route, request, app, post, redirect
+from bottle import route, request, app, post, redirect, get, static_file
 from bottle_utils.csrf import csrf_token
+from PIL import Image
 
 from henet.util import file_age
 
@@ -59,8 +60,10 @@ def parse_files(path, page=-1, page_size=20):
     if page != -1:
         start = page * page_size
         end = start + page_size - 1
-        return media[start:end], total_pages
+        media = media[start:end]
 
+    # XXX we want to sort images by their HxW ratio, so they tile
+    #
     return media, total_pages
 
 
@@ -77,3 +80,39 @@ def get_media():
             'total_pages': total_pages,
             'current_page': page,
             'csrf_token': request.csrf_token}
+
+
+@get("/media/<filename>", no_i18n=True)
+def get_file(filename):
+    media_dir = app._config['henet']['media_dir']
+    fullpath = os.path.join(media_dir, filename)
+    mimetype = guess_type(fullpath)[0]
+
+    return static_file(filename, root=media_dir,
+                       mimetype=mimetype)
+
+
+@get("/thumbnail/<size>/<filename>", no_i18n=True)
+def get_media_thumbnail(size, filename):
+    ext = os.path.splitext(filename)[-1].lower()
+
+    if ext not in  ('.jpg', '.png', '.jpeg', '.bmp'):
+        redirect('/resources/images/blank.png')
+
+    media_dir = app._config['henet']['media_dir']
+    thumbnails_dir = app._config['henet']['thumbnails_dir']
+
+    thumbname = size + '-' + filename
+    thumbnail_file = os.path.join(thumbnails_dir, thumbname)
+
+    if not os.path.exists(thumbnail_file):
+        image_file = os.path.join(media_dir, filename)
+        size = [int(i) for i in size.split('x')]
+        image = Image.open(image_file)
+        image.thumbnail(size)
+        image.save(thumbnail_file, 'JPEG')
+
+
+    mimetype = guess_type(thumbnail_file)[0]
+    return static_file(thumbname, root=thumbnails_dir,
+                       mimetype=mimetype)

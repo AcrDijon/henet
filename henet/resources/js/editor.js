@@ -9,15 +9,21 @@ function genPreview() {
         return;
     }
     lastContent = rstContent;
-    activeXhr = $.ajax({
+    activeXhr = $.getJSON({
         'url': '/preview',
         'data': {'rst': rstContent},
         'type': 'POST',
         'error': function(xhr) {
             setPreviewHtml(xhr.responseText);
         },
-        'success': function(response) {
-            setPreviewHtml(response);
+        'success': function(data) {
+            if (data.valid) {
+              $('#save').removeAttr('disabled');
+            }
+            else {
+              $('#save').attr('disabled', 'disabled');
+            }
+            setPreviewHtml(data.result);
             syncScrollPosition();
             activeXhr = null;
         }

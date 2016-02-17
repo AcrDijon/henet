@@ -1,8 +1,8 @@
 # Adapted from rsted
 import os
 from os.path import join as J
-from docutils.core import publish_string
-from bs4 import BeautifulSoup
+from StringIO import StringIO
+from docutils.core import publish_string, publish_parts
 
 
 # see http://docutils.sourceforge.net/docs/user/config.html
@@ -23,6 +23,16 @@ THEMES = os.path.join(os.path.dirname(__file__), 'themes')
 # cache + security
 def rst2html(rst, theme=None, opts=None, body_only=False):
     rst_opts = default_rst_opts.copy()
+    rst_opts['warning_stream'] = StringIO()
+
+    if body_only:
+        out = publish_parts(rst, writer_name='html',
+                            settings_overrides=rst_opts)['html_body']
+
+        rst_opts['warning_stream'].seek(0)
+        warnings = rst_opts['warning_stream'].read()
+        return out, warnings
+
     if opts:
         rst_opts.update(opts)
     rst_opts['template'] = os.path.join(THEMES, 'template.txt')
@@ -34,11 +44,6 @@ def rst2html(rst, theme=None, opts=None, body_only=False):
 
     out = publish_string(rst, writer_name='html', settings_overrides=rst_opts)
 
-    # XXX we should create a custom docutils writer to write just the
-    # body instead of extracting it from publish_string
-    if body_only:
-        soup = BeautifulSoup(out, 'html.parser')
-        body = soup.body.find('div', {'class': 'body'}).contents
-        out = ''.join([str(tag) for tag in body])
-
-    return out
+    rst_opts['warning_stream'].seek(0)
+    warnings = rst_opts['warning_stream'].read()
+    return out, warnings

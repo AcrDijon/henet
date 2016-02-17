@@ -15,10 +15,15 @@ _CACHE = {}
 
 @post("/preview", no_i18n=True)
 def build_preview():
-    rst = request.json.get('rst', '')
+    if request.content_type == 'application/json':
+        rst = request.json['rst']
+    else:
+        rst = request.POST['rst']
+
     key = md5(rst)
     if key in _CACHE:
         return _CACHE[key]
-    res = rst2html(rst, theme='acr')
+    res, warnings = rst2html(rst, theme='acr')
     _CACHE[key] = res
-    return res
+    return {'result': res, 'warnings': warnings,
+            'valid': len(warnings) == 0}

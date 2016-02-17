@@ -34,7 +34,7 @@
     <span style="clear: both"></span>
  </div>
 
- <button type="submit" class="btn btn-default">{{_('Save')}}</button>
+ <button type="submit" id="save" class="btn btn-default">{{_('Save')}}</button>
 
 </form>
 
