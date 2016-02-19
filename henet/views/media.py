@@ -4,10 +4,11 @@ import datetime
 from mimetypes import guess_type
 
 from bottle import route, request, app, post, redirect, get, static_file
-from bottle_utils.csrf import csrf_token
+from bottle_utils.csrf import csrf_token, csrf_protect
 from PIL import Image
 
 from henet.util import file_age
+from henet.events import emit, EVENT_DELETED_CONTENT
 
 
 mimetypes = os.path.join(os.path.dirname(__file__), '..', 'resources',
@@ -118,3 +119,29 @@ def get_media_thumbnail(size, filename):
     mimetype = guess_type(thumbnail_file)[0]
     return static_file(thumbname, root=thumbnails_dir,
                        mimetype=mimetype)
+
+
+@post("/delete/media/<filename:path>", no_i18n=True)
+@csrf_protect
+def del_media(filename):
+    filename = filename.decode('utf8')
+
+    # removing file
+    media_dir = app._config['henet']['media_dir']
+    path = os.path.join(media_dir, filename)
+    if os.path.exists(path):
+        os.remove(path)
+        emit(EVENT_DELETED_CONTENT, filename=path)
+
+    # removing any thumbnail
+    thumbnails_dir = app._config['henet']['thumbnails_dir']
+    for thumbname in os.listdir(thumbnails_dir):
+        if not thumbname.endswith('-' + filename):
+            continue
+        thumbnail_file = os.path.join(thumbnails_dir, thumbname)
+        if os.path.exists(thumbnail_file):
+            os.remove(thumbnail_file)
+            emit(EVENT_DELETED_CONTENT, filename=thumbname)
+
+    # Page?
+    redirect('/media')
