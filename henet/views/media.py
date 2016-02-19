@@ -102,8 +102,13 @@ def get_media_thumbnail(size, filename):
 
     ext = os.path.splitext(filename)[-1].lower()
 
+    if ext == '.pdf':
+        redirect('/resources/images/pdf-200x200.png')
+        return
+
     if ext not in  ('.jpg', '.png', '.jpeg', '.bmp'):
         redirect('/resources/images/blank.png')
+        return
 
     media_dir = app._config['henet']['media_dir']
     thumbnails_dir = app._config['henet']['thumbnails_dir']
