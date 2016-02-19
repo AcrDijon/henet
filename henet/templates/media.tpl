@@ -48,7 +48,8 @@
   <h4>{{_('Adding a file')}}</h4>
 </div>
 
-<form role="form" action="/upload" method="POST"  accept-charset="utf8">
+<form role="form" action="/upload" method="POST"  accept-charset="utf8"
+      enctype='multipart/form-data'>
  <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
  <div class="form-group">
    <label for="title">{{_('File')}}:</label>

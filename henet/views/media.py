@@ -8,7 +8,7 @@ from bottle_utils.csrf import csrf_token, csrf_protect
 from PIL import Image
 
 from henet.util import file_age
-from henet.events import emit, EVENT_DELETED_CONTENT
+from henet.events import emit, EVENT_DELETED_CONTENT, EVENT_CREATED_CONTENT
 
 
 mimetypes = os.path.join(os.path.dirname(__file__), '..', 'resources',
@@ -31,8 +31,11 @@ def sizeof_fmt(num, suffix='b'):
 # XXX share code with henet.util.parse_article(s)
 def parse_file(path):
     type = guess_type(path)[0]
-    image_type = type.split('/')[1] + '-icon-24x24.png'
-    if image_type not in mimetypes:
+    if type is not None:
+        image_type = type.split('/')[1] + '-icon-24x24.png'
+        if image_type not in mimetypes:
+            image_type = 'txt-icon-24x24.png'
+    else:
         image_type = 'txt-icon-24x24.png'
 
     return {'name': os.path.split(path)[-1],
@@ -142,6 +145,24 @@ def del_media(filename):
         if os.path.exists(thumbnail_file):
             os.remove(thumbnail_file)
             emit(EVENT_DELETED_CONTENT, filename=thumbname)
+
+    # Page?
+    redirect('/media')
+
+
+@post("/upload", no_i18n=True)
+@csrf_protect
+def upload_file():
+    files = request.files.values()
+
+    # adding file
+    if len(files) == 1:
+        media_dir = app._config['henet']['media_dir']
+        file_ = files[0]
+        filename = file_.filename.decode('utf8')
+        path = os.path.join(media_dir, filename)
+        file_.save(path)
+        emit(EVENT_CREATED_CONTENT, filename=file_.filename)
 
     # Page?
     redirect('/media')
