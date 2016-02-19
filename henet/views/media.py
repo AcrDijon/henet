@@ -94,6 +94,8 @@ def get_file(filename):
 
 @get("/thumbnail/<size>/<filename>", no_i18n=True)
 def get_media_thumbnail(size, filename):
+    filename = filename.decode('utf8')
+
     ext = os.path.splitext(filename)[-1].lower()
 
     if ext not in  ('.jpg', '.png', '.jpeg', '.bmp'):

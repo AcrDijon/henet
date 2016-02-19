@@ -2,21 +2,35 @@
 <h1>{{_('Media management')}}</h1>
 </div>
 
-% for file in files:
-<div style="float:left; margin: 4px; max-width: 200px; max-height:200px">
-  <a href="/media/{{ file['name'] }}" data-lightbox="{{file['name']}}" id="a-{{file['name']}}">
-    <img src="/thumbnail/200x200/{{ file['name'] }}"/>
+<div class="container-fluid">
+<div class="grid">
+<div class="grid-sizer col-xs-3"></div>
+ % for file in files:
+ <div class="grid-item">
+ <div class="grid-item-content" style="max-width: 200px; max-height:200px; position: relative; margin: 4px">
+<!-- style="float:left; margin: 4px; max-width: 200px; max-height:200px; position: relative"-->
+
+  <a  href="/media/{{ file['name'] }}" data-lightbox="{{file['name']}}" id="a-{{file['name']}}">
+
+  <img src="/thumbnail/200x200/{{ file['name'] }}"/>
+
   </a>
-  <!--form style="float:right" action="/delete/media/{{file['name']}}"
-        method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
+   <form action="/delete/media/{{file['name']}}"
+         method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');"
+         style="position:absolute;top: 5px;right: 5px">
+
   <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
-    <button type="submit" class="btn btn-xs btn-danger" onmouseover="$('#a-{{file['name']}}').css('pointer-events', 'none')">
+    <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
-  </form-->
-</div>
+  </form>
+ </div>
+ </div>
 % end
-<div style="clear:both"/>
+
+</div>
+</div>
+<!--div style="clear:both"/-->
 
 
 % if total_pages > 1:
@@ -48,5 +62,16 @@
 </form>
 
 <script src="/resources/js/lightbox-plus-jquery.min.js"></script>
+<script src="/resources/js/masonry.pkgd.min.js">></script>
+<script>
+
+$(function() {
+  $('.grid').masonry({
+    itemSelector: '.grid-item',
+    columnWidth: 209,  //'.grid-sizer',
+    percentPosition: true
+ });
+});
+</script>
 
 % rebase('base.tpl', page_title=_('Media Management'))
