@@ -11,10 +11,11 @@
 <!-- style="float:left; margin: 4px; max-width: 200px; max-height:200px; position: relative"-->
 
   <a  href="/media/{{ file['name'] }}" data-lightbox="{{file['name']}}" id="a-{{file['name']}}">
-
-  <img src="/thumbnail/200x200/{{ file['name'] }}"/>
-
+   <img src="/thumbnail/200x200/{{ file['name'] }}"/>
   </a>
+
+   <span style="position:absolute;bottom: 2px;left: 4px; text-shadow: 1px 1px black; color: white; text-overflow: ellipsis;width:90%;font-size: 12px;white-space: nowrap;overflow: hidden;">{{ file['name'] }}</span>
+
    <form action="/delete/media/{{file['name']}}"
          method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');"
          style="position:absolute;top: 5px;right: 5px">
