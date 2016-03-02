@@ -17,12 +17,12 @@
 
  <div class="form-group">
    <label for="date">{{_('Date')}}:</label>
-   <input class="form-control" id="date" name="date" type="text" value="{{article['metadata'].get('date', now).strftime('%d/%m/%Y') }}"></input>
+   <input class="form-control" id="date" name="date" type="text" value="{{article['metadata'].get('date', now).strftime('%Y-%m-%d') }}"></input>
  </div>
 
  <div class="form-group">
    <label for="eventdate">{{_('Event Date')}}:</label>
-   <input class="form-control" id="eventdate" name="eventdate" type="text" value="{{article['metadata'].get('eventdate', now).strftime('%d/%m/%Y') }}"></input>
+   <input class="form-control" id="eventdate" name="eventdate" type="text" value="{{article['metadata'].get('eventdate', now).strftime('%Y-%m-%d') }}"></input>
  </div>
 
 
@@ -43,12 +43,12 @@
 
 <script>
  $('#date').datepicker({
-   format: "dd/mm/yyyy",
+   format: "yyyy-mm-dd",
    language: "fr"
  });
 
  $('#eventdate').datepicker({
-   format: "dd/mm/yyyy",
+   format: "yyyy-mm-dd",
    language: "fr"
  });
 
