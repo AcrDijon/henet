@@ -33,3 +33,52 @@ body {
   float: left;
   margin-left: 1.5%;
 }
+
+div.batch {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  padding: 8px;
+  float: left;
+  font-size: 18px;
+}
+
+div.batch span {
+  padding: 4px;
+}
+
+div.batch span.active {
+  border: 2px solid  #0000FF;
+  background-color: #99ebff;
+  font-weight: bold;
+  color: #003eb0;
+  border-radius: 10px;
+}
+
+span.imagetext {
+  position: absolute;
+  bottom: 2px;
+  left: 4px; 
+  text-shadow: 2px 2px black; 
+  color: #f0f0f5; 
+  text-overflow: ellipsis;
+  width:90%;
+  font-weight: bold;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden
+}
+
+div.grid-item-content {
+  max-width: 200px; 
+  max-height:200px; 
+  position: relative; 
+  margin: 4px;
+}
+
+div.grid-item-content form {
+ position: absolute;
+ top: 5px;
+ right: 5px;
+}
+
+

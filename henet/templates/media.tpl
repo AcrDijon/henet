@@ -7,19 +7,14 @@
 <div class="grid-sizer col-xs-3"></div>
  % for file in files:
  <div class="grid-item">
- <div class="grid-item-content" style="max-width: 200px; max-height:200px; position: relative; margin: 4px">
-<!-- style="float:left; margin: 4px; max-width: 200px; max-height:200px; position: relative"-->
-
+ <div class="grid-item-content">
   <a  href="/media/{{ file['name'] }}" data-lightbox="{{file['name']}}" id="a-{{file['name']}}">
    <img src="/thumbnail/200x200/{{ file['name'] }}"/>
   </a>
-
-   <span style="position:absolute;bottom: 2px;left: 4px; text-shadow: 1px 1px black; color: white; text-overflow: ellipsis;width:90%;font-size: 12px;white-space: nowrap;overflow: hidden;">{{ file['name'] }}</span>
+   <span class="imagetext">{{ file['name'] }}</span>
 
    <form action="/delete/media/{{file['name']}}"
-         method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');"
-         style="position:absolute;top: 5px;right: 5px">
-
+         method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
   <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
     <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-trash"></span>
@@ -31,17 +26,21 @@
 
 </div>
 </div>
-<!--div style="clear:both"/-->
 
 
 % if total_pages > 1:
+<div class="batch">
   % for page in range(total_pages):
   % if page == current_page:
-    {{page}}
+  <span class="active">{{page}}</span>
   % else:
+  <span class="inactive">
     <a href="/media?page={{page}}">{{page}}</a>
+  </span>
   % end
   % end
+</div>
+<div style="clear:both"/>
 % end
 
 <hr/>
@@ -67,7 +66,7 @@
 <script src="/resources/js/masonry.pkgd.min.js">></script>
 <script>
 
-$(function() {
+$(window).load(function() {
   $('.grid').masonry({
     itemSelector: '.grid-item',
     columnWidth: 209,  //'.grid-sizer',

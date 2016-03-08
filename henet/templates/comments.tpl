@@ -53,4 +53,4 @@
   });
 </script>
 
-% rebase('base.tpl', page_title="_('Moderation')")
+% rebase('base.tpl', page_title=_('Moderation'))
