@@ -19,7 +19,7 @@
     <link id="bsdp-css" href="/resources/css/datepicker3.css" rel="stylesheet">
     <link id="jqta-css" href="/resources/css/jquery-linedtextarea.css"
           rel="stylesheet">
-
+    <link href="/resources/css/jquery.toastmessage.css" rel="stylesheet" />
     <!--CSS-END-->
 
     <!--[if lt IE 9]>

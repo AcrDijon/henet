@@ -13,13 +13,18 @@
   </a>
    <span class="imagetext">{{ file['name'] }}</span>
 
-   <form action="/delete/media/{{file['name']}}"
+  <form action="/delete/media/{{file['name']}}"
          method="POST" onsubmit="return confirm('{{_('Do you really want to suppress this?')}}');">
   <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
     <button type="submit" class="btn btn-xs btn-danger">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
   </form>
+   <button class="btn btn-xs btn-success copy" 
+  data-clipboard-text="..image:: http://assets.acr-dijon.org/{{ file['name'] }}">
+  <span class="glyphicon glyphicon-copy"></span>
+  </button>
+
  </div>
  </div>
 % end
@@ -64,9 +69,22 @@
 
 <script src="/resources/js/lightbox-plus-jquery.min.js"></script>
 <script src="/resources/js/masonry.pkgd.min.js">></script>
+<script src="/resources/js/clipboard.min.js"></script>
+<script src="/resources/js/jquery.toastmessage.js"></script>
+
 <script>
 
 $(window).load(function() {
+  var clipboard = new Clipboard('.copy');
+
+  clipboard.on('success', function(e) {
+    showToast("{{_('Link Copied')}}");
+  });
+
+  function showToast(msg) {
+    $().toastmessage('showSuccessToast', msg);
+  }
+
   $('.grid').masonry({
     itemSelector: '.grid-item',
     columnWidth: 209,  //'.grid-sizer',

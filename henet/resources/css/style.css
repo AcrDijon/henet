@@ -75,6 +75,13 @@ div.grid-item-content {
   margin: 4px;
 }
 
+div.grid-item-content button.copy {
+ position: absolute;
+ top: 5px;
+ right: 30px;
+}
+
+
 div.grid-item-content form {
  position: absolute;
  top: 5px;
