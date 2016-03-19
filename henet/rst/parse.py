@@ -1,4 +1,5 @@
 from henet.rst import patch  # NOQA
+from henet.rst import extra  # NOQA
 
 from docutils.parsers.rst import Parser
 from docutils.frontend import OptionParser
@@ -186,6 +187,23 @@ class RSTTranslator(nodes.NodeVisitor):
         if res[-1] != '\n':
             res += '\n'
         return res
+
+    def visit_raw(self, node):
+        if node.rawsource != '':
+            self.result.append(node.rawsource)
+            self.result.append('')
+            raise SkipNode()
+
+        source = node.astext()
+        self.result.append('..raw:: html')
+        self.result.append('')
+        for line in source.split('\n'):
+            self.result.append('    %s' % line)
+        self.result.append('')
+        raise SkipNode()
+
+    def depart_raw(self, node):
+        pass
 
 
 class RSTThreadTranslator(RSTTranslator):
