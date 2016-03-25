@@ -100,6 +100,12 @@ class RSTTranslator(nodes.NodeVisitor):
     def depart_line_block(self, node):
         pass
 
+    def visit_system_message(self, node):
+        raise SkipNode()
+
+    def depart_system_message(self):
+        pass
+
     def visit_line(self, node):
         raise NotImplementedError(node)
 
@@ -291,7 +297,9 @@ def parse_article(filename, destination=None):
     try:
         pub.publish()
     except SystemExit as e:
-        raise Exception(str(e))
+        article = pub.writer.visitor.article
+        with open(filename) as f:
+            article.original_source = f.read()
 
     return pub.writer.visitor.article
 
@@ -313,6 +321,6 @@ def parse_thread(filename, destination=None):
     try:
         pub.publish()
     except SystemExit as e:
-        raise Exception(str(e))
+        pass
 
     return pub.writer.visitor.uuid, pub.writer.visitor.comments

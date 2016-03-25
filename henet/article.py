@@ -11,6 +11,9 @@ class Article(dict):
             self['title_source'] = ''
         if 'body' not in self:
             self['body'] = ''
+        if 'original_source' not in self:
+            self['original_source'] = ''
+        self.warnings = []
 
     def set_metadata(self, key, value):
         self['metadata'][key.lower()] = value
