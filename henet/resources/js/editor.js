@@ -2,19 +2,22 @@ var activeXhr = null;
 var lastContent = null;
 
 function genPreview() {
-    var self = $('textarea#body');
+
+    var self = $('textarea#content');
     var rstContent = self.val();
     if (activeXhr || lastContent == rstContent) {
-        //activeXhr.abort();
         return;
     }
+
     lastContent = rstContent;
     activeXhr = $.getJSON({
         'url': '/preview',
         'data': {'rst': rstContent},
         'type': 'POST',
         'error': function(xhr) {
-            setPreviewHtml(xhr.responseText);
+           setPreviewHtml(xhr.responseText);
+           $('#save').attr('disabled', 'disabled');
+           activeXhr = null;
         },
         'success': function(data) {
             if (data.valid) {
@@ -31,7 +34,7 @@ function genPreview() {
 }
 
 function syncScrollPosition() {
-    var $ed = $('textarea#body');
+    var $ed = $('textarea#content');
     var $prev = $('#preview');
 
     var editorScrollRange = ($ed[0].scrollHeight - $ed.innerHeight());

@@ -22,8 +22,9 @@ def build_preview():
 
     key = md5(rst)
     if key in _CACHE:
-        return _CACHE[key]
-    res, warnings = rst2html(rst, theme='acr')
-    _CACHE[key] = res
+        res, warnings = _CACHE[key]
+    else:
+        res, warnings = _CACHE[key] = rst2html(rst, theme='acr')
+
     return {'result': res, 'warnings': warnings,
             'valid': len(warnings) == 0}

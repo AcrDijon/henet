@@ -27,7 +27,7 @@
 
 
  <div class="form-group">
-    <textarea id="body" rows="5" id="content" name="body">{{article['body']}}</textarea>
+    <textarea rows="5" id="content" name="content">{{article['body']}}</textarea>
     <iframe id="preview" src="/preview">
      Preview
     </iframe>
@@ -53,14 +53,14 @@
  });
 
 
- $("#body").linedtextarea();
+ $("#content").linedtextarea();
 
  window.baseTitle = $('head title').text();
 
- $('textarea#body').bind('change', genPreview);
+ $('textarea#content').bind('change', genPreview);
  timerId = window.setInterval(genPreview, 900);
 
- //$('textarea#body').scroll(syncScrollPosition);
+ //$('textarea#content').scroll(syncScrollPosition);
  $("#preview").height($("div.linedwrap").outerHeight());
  $("#preview").width($("div.linedwrap").outerWidth());
 

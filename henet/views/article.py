@@ -73,8 +73,8 @@ def post_page(page, article):
     # XXX all this update crap should be in a Document() class
     if 'title' in data:
         article['title'] = data['title']
-    if 'body' in data:
-        article['body'] = data['body']
+    if 'content' in data:
+        article['body'] = data['content']
     if 'date' in data:
         article.set_metadata('date', data['date'])
 
@@ -97,8 +97,8 @@ def post_article(category, article):
     # XXX all this update crap should be in a Document() class
     if 'title' in data:
         article['title'] = data['title']
-    if 'body' in data:
-        article['body'] = data['body']
+    if 'content' in data:
+        article['body'] = data['content']
 
     for meta in ('location', 'date', 'eventdate'):
         if meta in data:
@@ -160,7 +160,7 @@ def create_article_or_page():
 
     article = Article()
     article['title'] = data['title']
-    article['body'] = data.get('body', DEFAULT_BODY)
+    article['body'] = data.get('content', DEFAULT_BODY)
     date = datetime.datetime.now()
     article.set_metadata('date', date)
 
